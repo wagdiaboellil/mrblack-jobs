@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>اشتغل في مستر بلاك</title>
+<meta property="og:title" content="اشتغل في مستر بلاك">
+<meta property="og:description" content="قدّم في 7 دقايق: مسؤول مبيعات، موديريتور، مساعد مدير، ومدير فرع. طنطا.">
+<meta property="og:image" content="https://jobs.mrblackeg.com/assets/og.jpg">
+<meta property="og:url" content="https://jobs.mrblackeg.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<meta name="description" content="قدّم على شغل في مستر بلاك – طنطا">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;700;900&family=Bungee&family=Readex+Pro:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: phone = sticky game header + chat + answer dock. Laptop (>=960px) = side panel with logo, stage journey and points; chat column beside it.
+   Committed single look: Mr. Black canary on black, with pink/cyan only for celebration moments. */
+:root {
+  --ink: #000000;
+  --panel: #0f0f0f;
+  --bubble: #161616;
+  --edge: #2a2a2a;
+  --canary: #fff000;
+  --canary-dim: #4d4800;
+  --paper: #ffffff;
+  --muted: #9a9a9a;
+  --pink: #ff3d8b;
+  --cyan: #2ee6ff;
+  --bad: #ff6b5a;
+  --display: "Alexandria", "Readex Pro", "Segoe UI", Tahoma, sans-serif;
+  --body: "Readex Pro", "Segoe UI", Tahoma, sans-serif;
+  --game: "Bungee", "Alexandria", Impact, sans-serif;
+  color-scheme: dark;
+}
+html { direction: rtl; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+.shell { height: 100vh; height: 100dvh; }
+html, body { height: 100%; }
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+* { box-sizing: border-box; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--canary); outline-offset: 2px; }
+.num { font-family: var(--game); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+
+/* faint giant M in the background, like the brand posters */
+.bgmark { position: fixed; inset-inline-end: -8vw; bottom: -10vh; width: min(70vw, 560px); opacity: .07; pointer-events: none; z-index: 0; }
+
+.shell { position: relative; z-index: 1; height: 100%; display: flex; }
+
+/* ---------- side panel (laptop only) ---------- */
+.side { display: none; }
+@media (min-width: 960px) {
+  .side {
+    display: flex; flex-direction: column; gap: 28px;
+    width: 380px; flex: none; height: 100%;
+    padding-block: 40px;
+    padding-left: max(32px, env(safe-area-inset-left, 0px));
+    padding-right: 32px;
+    border-inline-end: 1px solid var(--edge);
+    background: linear-gradient(180deg, #0b0b00, var(--ink) 40%);
+    overflow-y: auto;
+  }
+  .side .lock { display: grid; justify-items: start; gap: 14px; }
+  .side .lock .m { width: 64px; }
+  .side .lock .w { width: 260px; }
+  .side .lock .t { width: 180px; opacity: .85; }
+  .journey { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .journey li { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 12px; color: var(--muted); transition: background .3s, color .3s; }
+  .journey .dot { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--edge); display: grid; place-items: center; font-family: var(--game); font-size: 15px; flex: none; transition: all .3s; }
+  .journey li.done { color: var(--paper); }
+  .journey li.done .dot { background: var(--canary); border-color: var(--canary); color: var(--ink); }
+  .journey li.now { background: #161600; color: var(--paper); }
+  .journey li.now .dot { border-color: var(--canary); color: var(--canary); box-shadow: 0 0 0 6px rgba(255,240,0,.12); animation: pulse 1.6s ease-in-out infinite; }
+  .journey .jt { display: grid; line-height: 1.35; }
+  .journey .jt b { font-family: var(--display); font-weight: 700; font-size: 15px; }
+  .journey .jt small { font-size: 12px; color: var(--muted); }
+  .side .bank { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .side .bank div { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 12px 14px; display: grid; }
+  .side .bank b { font-family: var(--game); font-size: 26px; color: var(--canary); line-height: 1.2; }
+  .side .bank span { font-size: 12px; color: var(--muted); }
+  .top .brandrow .lockup { display: none; }
+}
+@keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(255,240,0,0); } }
+
+/* ---------- main column ---------- */
+.main { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
+.col { width: 100%; max-width: 680px; margin: 0 auto; }
+
+/* ---------- game header ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: rgba(0,0,0,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--edge);
+}
+.top .col { display: grid; gap: 10px; padding-block: 12px 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brandrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.lockup { display: flex; align-items: center; gap: 10px; direction: ltr; }
+.lockup .m { height: 34px; width: auto; }
+.lockup .w { height: 16px; width: auto; }
+.hud { display: flex; align-items: center; gap: 8px; margin-inline-start: auto; }
+.pill { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; background: var(--panel); border: 1px solid var(--edge); font-size: 13px; white-space: nowrap; }
+.pill .num { font-size: 16px; color: var(--canary); }
+.pill.streak { border-color: var(--pink); color: var(--pink); }
+.pill.streak .num { color: var(--pink); }
+.pill.bump { animation: bump .45s ease; }
+@keyframes bump { 35% { transform: scale(1.18) rotate(-3deg); } }
+
+.track { position: relative; height: 54px; }
+.lane { position: absolute; inset-inline: 10px; top: 30px; height: 8px; border-radius: 99px; background: repeating-linear-gradient(90deg, #222 0 10px, #1a1a1a 10px 20px); }
+.lane-fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--canary), #ffd000); box-shadow: 0 0 14px rgba(255,240,0,.55); transition: width .6s cubic-bezier(.2,.9,.2,1.1); }
+.stops { position: absolute; inset-inline: 10px; top: 24px; display: flex; justify-content: space-between; pointer-events: none; }
+.stop { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 2px solid #333; display: grid; place-items: center; font-family: var(--game); font-size: 8px; color: #666; transition: all .3s; }
+.stop.on { background: var(--canary); border-color: var(--canary); color: var(--ink); }
+.runner { position: absolute; top: 0; inset-inline-start: 10px; transition: inset-inline-start .6s cubic-bezier(.2,.9,.2,1.1); display: grid; justify-items: center; }
+.runner svg { width: 34px; height: 22px; transform: scaleX(-1); filter: drop-shadow(0 0 6px rgba(255,240,0,.6)); }
+.runner.hop svg { animation: hop .5s ease; }
+@keyframes hop { 40% { transform: scaleX(-1) translateY(-8px) rotate(-10deg); } }
+.runner .pct { position: absolute; top: 2px; inset-inline-start: 40px; font-family: var(--game); font-size: 13px; color: var(--canary); white-space: nowrap; }
+.runner.late .pct { inset-inline-start: auto; inset-inline-end: 40px; }
+.stage-line { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); margin-top: -6px; }
+.stage-line b { color: var(--paper); font-family: var(--display); font-weight: 700; }
+
+/* ---------- thread ---------- */
+.thread { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; }
+.thread .col { display: flex; flex-direction: column; gap: 8px; padding-block: 20px 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.line { display: flex; gap: 8px; align-items: flex-end; max-width: 88%; animation: pop .32s cubic-bezier(.2,.9,.3,1.3) both; }
+@keyframes pop { from { transform: translateY(10px) scale(.96); opacity: 0; } }
+.line.me { align-self: flex-end; }
+.ava { width: 30px; height: 30px; border-radius: 50%; background: var(--canary); flex: none; display: grid; place-items: center; }
+.ava img { height: 19px; filter: brightness(0); }
+.ava.ghost { visibility: hidden; }
+.msg { padding: 10px 14px; border-radius: 18px; white-space: pre-line; min-width: 0; overflow-wrap: anywhere; }
+.bot .msg { background: var(--bubble); border: 1px solid var(--edge); border-end-start-radius: 6px; }
+.me .msg { background: var(--canary); color: var(--ink); font-weight: 500; border-end-end-radius: 6px; }
+.line.bot + .line.me, .line.me + .line.bot { margin-top: 10px; }
+.typing { display: inline-flex; gap: 4px; padding: 14px 16px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--canary); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; }
+.typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: .2; transform: translateY(-3px); } }
+
+.stage-badge { align-self: center; margin-block: 16px 6px; display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border-radius: 99px; background: #141400; border: 1px solid var(--canary-dim); font-size: 14px; animation: pop .4s both; }
+.stage-badge .num { background: var(--canary); color: var(--ink); width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; }
+
+.terms { align-self: stretch; background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 16px; display: grid; gap: 14px; animation: pop .4s both; }
+.terms h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--canary); }
+.jobs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+.job { border: 1px solid var(--edge); border-radius: 14px; padding: 12px; display: grid; gap: 2px; background: var(--ink); }
+.job b { font-family: var(--display); font-weight: 700; font-size: 15px; }
+.job .pay { font-family: var(--game); font-size: 17px; color: var(--canary); direction: ltr; text-align: right; }
+.job small { color: var(--muted); font-size: 12px; }
+.terms ul { margin: 0; padding-inline-start: 18px; display: grid; gap: 4px; font-size: 14px; }
+.terms ul li::marker { color: var(--canary); }
+
+/* ---------- dock ---------- */
+.dock { border-top: 1px solid var(--edge); background: var(--ink); max-height: 60%; overflow-y: auto; }
+.dock .col { display: grid; gap: 10px; padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: max(14px, env(safe-area-inset-bottom, 0px)); }
+.dock .col:empty { padding: 0; }
+.hint { font-size: 13px; color: var(--muted); }
+.err { font-size: 13px; color: var(--bad); }
+.err:empty { display: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1.5px solid #333; background: var(--panel); padding: 10px 16px; border-radius: 99px; cursor: pointer; transition: border-color .15s, background .15s, transform .1s, color .15s; text-align: start; animation: pop .3s both; }
+.chip:nth-child(2) { animation-delay: .04s; } .chip:nth-child(3) { animation-delay: .08s; } .chip:nth-child(4) { animation-delay: .12s; } .chip:nth-child(n+5) { animation-delay: .16s; }
+.chip:hover { border-color: var(--canary); color: var(--canary); }
+.chip:active { transform: scale(.95); }
+.chip[aria-pressed="true"] { background: var(--canary); color: var(--ink); border-color: var(--canary); }
+.cards { display: grid; gap: 8px; }
+.cards .chip { border-radius: 14px; padding: 12px 14px; line-height: 1.55; width: 100%; display: flex; gap: 12px; align-items: flex-start; }
+.cards .chip .k { flex: none; width: 24px; height: 24px; border-radius: 7px; background: #222; display: grid; place-items: center; font-family: var(--game); font-size: 11px; color: var(--canary); margin-top: 1px; }
+.cards .chip:hover .k { background: var(--canary); color: var(--ink); }
+@media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
+.row { display: flex; gap: 8px; align-items: flex-end; }
+.field { flex: 1; min-width: 0; background: var(--panel); border: 1.5px solid #333; border-radius: 16px; padding: 12px 14px; outline: none; resize: none; }
+.field:focus { border-color: var(--canary); }
+textarea.field { min-height: 100px; }
+.send { flex: none; border: 0; cursor: pointer; background: var(--canary); color: var(--ink); font-family: var(--display); font-weight: 700; padding: 12px 20px; border-radius: 16px; transition: transform .1s; }
+.send:active { transform: scale(.95); }
+.send:disabled { opacity: .3; cursor: default; }
+.meter { height: 4px; border-radius: 99px; background: #222; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0%; background: var(--pink); transition: width .2s, background .2s; }
+.meter.ok i { background: var(--canary); }
+
+/* ---------- floating +points ---------- */
+.float { position: fixed; z-index: 30; font-family: var(--game); font-size: 18px; color: var(--canary); pointer-events: none; animation: rise 1s ease-out forwards; text-shadow: 0 0 10px rgba(255,240,0,.7); }
+@keyframes rise { to { transform: translateY(-60px); opacity: 0; } }
+
+/* ---------- level-up ---------- */
+.levelup { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); animation: fade .2s both; cursor: pointer; padding: 24px; }
+@keyframes fade { from { opacity: 0; } }
+.lv { text-align: center; display: grid; gap: 6px; justify-items: center; animation: zoom .55s cubic-bezier(.2,.9,.3,1.4) both; }
+@keyframes zoom { from { transform: scale(.4) rotate(-8deg); opacity: 0; } }
+.lv .big { font-family: var(--game); font-size: clamp(88px, 22vw, 150px); line-height: 1; color: var(--canary); text-shadow: 6px 6px 0 var(--pink), 12px 12px 0 rgba(46,230,255,.6); }
+.lv .t1 { font-family: var(--display); font-weight: 900; font-size: 26px; }
+.lv .t2 { font-family: var(--game); font-size: 22px; color: var(--cyan); }
+.lv .t3 { color: var(--muted); font-size: 13px; margin-top: 8px; }
+canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; width: 100%; height: 100%; }
+
+/* ---------- welcome ---------- */
+.welcome { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; place-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); overflow-y: auto; }
+.welcome[hidden] { display: none !important; }
+.wbox { width: 100%; max-width: 520px; display: grid; justify-items: center; gap: 22px; text-align: center; }
+.wbox .m { width: 92px; animation: drop .7s cubic-bezier(.2,.9,.3,1.4) both; }
+.wbox .w { width: min(320px, 80vw); animation: drop .7s .1s cubic-bezier(.2,.9,.3,1.4) both; }
+.wbox .t { width: min(190px, 50vw); animation: drop .7s .2s both; }
+@keyframes drop { from { transform: translateY(-30px); opacity: 0; } }
+.wbox h1 { margin: 6px 0 0; font-family: var(--display); font-weight: 900; font-size: clamp(26px, 6vw, 34px); line-height: 1.3; text-wrap: balance; }
+.wbox p { margin: 0; color: var(--muted); max-width: 40ch; }
+.facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.facts span { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--edge); font-size: 13px; }
+.facts span:nth-child(1) { border-color: var(--canary-dim); color: var(--canary); }
+.facts span:nth-child(2) { border-color: rgba(255,61,139,.4); color: var(--pink); }
+.facts span:nth-child(3) { border-color: rgba(46,230,255,.4); color: var(--cyan); }
+.go { border: 0; cursor: pointer; background: var(--canary); color: var(--ink); font-family: var(--display); font-weight: 900; font-size: 20px; padding: 16px 44px; border-radius: 18px; box-shadow: 0 6px 0 #b3a800; transition: transform .1s, box-shadow .1s; animation: wiggle 2.4s 1.2s ease-in-out infinite; }
+.go:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3a800; }
+@keyframes wiggle { 0%, 88%, 100% { transform: rotate(0); } 92% { transform: rotate(-3deg); } 96% { transform: rotate(3deg); } }
+
+/* ---------- final shoebox label ---------- */
+.label { align-self: stretch; border: 3px solid var(--canary); border-radius: 8px; background: var(--panel); overflow: hidden; animation: zoom .6s both; max-width: 460px; width: 100%; margin-inline: auto; }
+.label-head { background: var(--canary); color: var(--ink); display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; direction: ltr; gap: 10px; }
+.label-head img { height: 18px; filter: brightness(0); }
+.label-head .ref { font-family: var(--game); font-size: 12px; }
+.label-body { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 14px; align-items: end; }
+.label-body .who { min-width: 0; display: grid; gap: 4px; }
+.label-body .name { font-family: var(--display); font-weight: 900; font-size: 21px; line-height: 1.3; }
+.label-body .job { color: var(--muted); font-size: 14px; }
+.label-body .size { text-align: center; }
+.label-body .size b { display: block; font-family: var(--game); font-size: 56px; line-height: 1; color: var(--canary); text-shadow: 3px 3px 0 var(--pink); }
+.label-body .size span { font-size: 12px; color: var(--muted); }
+.label-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px dashed #333; }
+.label-stats div { padding: 10px 12px; display: grid; gap: 2px; }
+.label-stats div + div { border-inline-start: 1px dashed #333; }
+.label-stats b { font-family: var(--game); font-size: 18px; }
+.label-stats div:nth-child(1) b { color: var(--canary); }
+.label-stats div:nth-child(2) b { color: var(--pink); }
+.label-stats div:nth-child(3) b { color: var(--cyan); }
+.label-stats span { font-size: 12px; color: var(--muted); }
+.barcode { height: 40px; margin: 0 14px 14px; display: flex; gap: 2px; direction: ltr; }
+.barcode i { background: var(--paper); flex: none; height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<img class="bgmark" src="assets/mark.png" alt="">
+
+<div class="welcome" id="welcome">
+  <div class="wbox">
+    <img class="m" src="assets/mark.png" alt="">
+    <img class="w" src="assets/word.png" alt="Mr. Black">
+    <img class="t" src="assets/tag.png" alt="You are the spot.">
+    <h1>عايز تشتغل في مستر بلاك؟</h1>
+    <p>دردشة سريعة بدل الفورم الممل. جاوب، اجمع نقط، وقفّل المقاسات من 41 لحد 45.</p>
+    <div class="facts"><span>7 دقايق بس</span><span>4 وظايف</span><span>طنطا</span></div>
+    <button class="go" id="go" type="button">يلا نبدأ</button>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="side" aria-label="تقدمك">
+    <div class="lock">
+      <img class="m" src="assets/mark.png" alt="">
+      <img class="w" src="assets/word.png" alt="Mr. Black">
+      <img class="t" src="assets/tag.png" alt="You are the spot.">
+    </div>
+    <ol class="journey" id="journey"></ol>
+    <div class="bank">
+      <div><b id="sidePts">0</b><span>نقطة</span></div>
+      <div><b id="sidePct">0%</b><span>خلصت</span></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <div class="col">
+        <div class="brandrow">
+          <div class="lockup"><img class="m" src="assets/mark.png" alt=""><img class="w" src="assets/word.png" alt="Mr. Black"></div>
+          <div class="hud">
+            <div class="pill streak" id="streak" hidden><span class="num" id="streakN">0</span><span>ورا بعض</span></div>
+            <div class="pill" id="ptsPill"><span class="num" id="pts">0</span><span>نقطة</span></div>
+          </div>
+        </div>
+        <div class="track" aria-hidden="true">
+          <div class="lane"><div class="lane-fill" id="fill"></div></div>
+          <div class="stops" id="stops"><span class="stop">41</span><span class="stop">42</span><span class="stop">43</span><span class="stop">44</span><span class="stop">45</span></div>
+          <div class="runner" id="runner">
+            <svg viewBox="0 0 64 40" aria-hidden="true"><path fill="#fff000" d="M3 28c0-6 3-13 6-17 2-3 6-3 8-1l6 6c3 3 7 4 11 4h6c6 0 11 2 15 5 3 2 6 3 7 5v4c0 2-1 3-3 3H6c-2 0-3-1-3-3z"/><path fill="#000" d="M3 31h59v3H3z" opacity=".55"/><path fill="#000" d="M18 14l3 3M22 11l3 3M26 15l3 3" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="pct" id="pct">0%</span>
+          </div>
+        </div>
+        <div class="stage-line"><span>مقاس <b class="num" id="stageSize">41</b>: <b id="stageName">التعارف</b></span><span id="left"></span></div>
+      </div>
+    </header>
+    <main class="thread" id="threadWrap"><div class="col" id="thread" aria-live="polite"></div></main>
+    <footer class="dock"><div class="col" id="dock"></div></footer>
+  </div>
+</div>
+
+<script>
+(() => {
+"use strict";
+document.documentElement.lang = "ar"; document.documentElement.dir = "rtl";
+const MARK = "assets/mark.png";
+
+// ============ ربط جوجل فورم (نفس فورم مستر بلاك والشيت بتاعه) ============
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfM3maIZiXVFjVxG3-Y4fHPtNae5inv-eqbUoLIB6DC6l4bew/formResponse";
+const ENTRY = {
+  pay:778093076, name:835853576, phone:1260763558, age:1020341669, gender:477272954, marital:1428161153,
+  mil:949386780, area:1668049830, address:154267520, commute:640804711, transport:1166309749, ret:1329064612,
+  job:1054383438, mode:1094279761, exp:2005807878, expf:249888335, lastjob:237563631, sal:299005923,
+  working:405113247, start:369248202, student:1624281952, qual:1032788647, shift:1021362639, unavail:860491017,
+  lectures:761021353, fri:1761280340, pen:1928827994, sjt1:1114522540, sjt2:1619002038, sjt3:1945237304,
+  sjt4:2048533011, focus:891135801, sjt5:862102877, sjt6:337979660, sjt7:63951697, sjt8:2040133713,
+  pitch:150367731, idays:466565065, itime:857873979, consent:430727147
+};
+
+// ============ الاختيارات (لازم تطابق الفورم حرف بحرف) ============
+const JOB = {
+  sales: "مسؤول مبيعات (شباب)",
+  mod: "موديريتور: رد على الرسايل والأوردرات أونلاين (شباب وبنات، ينفع من البيت)",
+  asst: "مساعد مدير فرع (شباب)",
+  mgr: "مدير فرع (شباب)"
+};
+const JOB_SHORT = { [JOB.sales]: "مسؤول مبيعات", [JOB.mod]: "موديريتور", [JOB.asst]: "مساعد مدير فرع", [JOB.mgr]: "مدير فرع" };
+const PAY_OK = "من يوم 5 لـ يوم 8 في الشهر";
+const C = {
+  pay: ["أول يوم في الشهر", "من يوم 1 لـ يوم 5 في الشهر", PAY_OK, "آخر يوم في الشهر"],
+  gender: ["ذكر", "أنثى"],
+  marital: ["أعزب", "خاطب", "متزوج"],
+  mil: ["أديت الخدمة", "إعفاء نهائي", "مؤجل (طالب)", "مطلوب للتجنيد قريب"],
+  area: ["طنطا (المدينة)", "قرية تابعة لمركز طنطا", "السنطة", "زفتى", "كفر الزيات", "بسيون", "قطور", "المحلة الكبرى", "سمنود", "محافظة تانية"],
+  commute: ["أقل من 15 دقيقة", "من 15 لـ 30 دقيقة", "من 30 لـ 45 دقيقة", "من 45 دقيقة لساعة", "أكتر من ساعة"],
+  transport: ["مشي", "ميكروباص أو أتوبيس", "توكتوك أو تاكسي", "عربيتي أو موتوسيكل"],
+  ret: ["أيوه، عادي", "بصعوبة", "لأ، مقدرش"],
+  mode: ["من البيت", "من الفرع"],
+  exp: ["مفيش", "أقل من سنة", "من سنة لسنتين", "من سنتين لـ 4 سنين", "أكتر من 4 سنين"],
+  expf: ["أحذية", "ملابس", "بيع في مجال تاني", "كول سنتر أو رد على رسايل أونلاين", "مفيش خبرة"],
+  sal: ["7,000 – 8,000", "8,000 – 10,000", "10,000 – 12,000", "12,000 – 15,000", "أكتر من 15,000"],
+  working: ["أيوه", "لأ"],
+  start: ["فورًا", "خلال أسبوع", "خلال أسبوعين", "بعد شهر أو أكتر"],
+  student: ["أيوه، طالب", "لأ، خلصت دراستي"],
+  qual: ["إعدادية أو أقل", "دبلوم أو ثانوية عامة", "طالب جامعة أو معهد", "بكالوريوس أو ليسانس", "دراسات عليا"],
+  shift: ["الشيفت الصباحي (12 الضهر – 8 بالليل)", "الشيفت المسائي (4 العصر – 12 بالليل)", "الاتنين يناسبوني", "حسب جدول الكلية"],
+  unavail: ["السبت", "الحد", "الاتنين", "التلات", "الأربع", "الخميس", "الجمعة", "متاح كل الأيام"],
+  fri: ["أيوه، يناسبني", "لأ، مايناسبنيش"],
+  pen: ["أيوه، موافق", "لأ، مش موافق"],
+  focus: ["جزمة", "صندل", "كوتشي", "شبشب"],
+  idays: ["السبت", "الحد", "الاتنين", "التلات", "الأربع", "الخميس"],
+  itime: ["من 12 لـ 3 العصر", "من 3 لـ 6 المغرب", "من 6 لـ 9 بالليل"],
+  consent: ["أيوه، قريت كل الشروط وموافق عليها"]
+};
+const SJT = [
+  ["زبون دخل الفرع متعصب وصوته عالي إن الكوتشي اللي اشتراه من أسبوع نعله اتفك. هتعمل إيه؟", [
+    "أهديه وأسمعه للآخر، أشوف الفاتورة والكوتشي، وأعرض عليه الحل حسب سياسة الاستبدال، ولو الموضوع أكبر من صلاحياتي أنده المدير",
+    "أقوله بهدوء إن ده غالبًا من طريقة الاستخدام ومش عيب صناعة",
+    "أنده المدير على طول عشان دي مش مسؤوليتي",
+    "أعتذر وأرجعله فلوسه فورًا عشان ميعملش مشكلة قدام الزباين"]],
+  ["زبون قاس 3 موديلات وفي الآخر قالك: هفكر وأرجعلك. هتعمل إيه؟", [
+    "أقوله براحتك يا فندم، نورتنا",
+    "أسأله بلطف إيه اللي مخليه متردد (السعر، المقاس، اللون) وأحاول أحل النقطة دي، ولو لسه مش جاهز آخد رقمه وأبلغه بالجديد",
+    "أقوله إن العرض هيخلص النهارده حتى لو ده مش حقيقي، عشان يشتري",
+    "أفضل أقنعه وأوريه موديلات تانية لحد ما يشتري أي حاجة"]],
+  ["زبون عاجبه موديل، ومقاسه 44 خلصان. هتعمل إيه؟", [
+    "أقوله للأسف المقاس خلص",
+    "أشوف المخزن والفرع التاني الأول، ولو مش موجود أعرض عليه موديل قريب بنفس المقاس وآخد رقمه لو المقاس هينزل تاني",
+    "أقنعه يقيس 43 أو 45 وأقوله هيبقى مظبوط",
+    "أعرض عليه موديل تاني موجود منه 44"]],
+  ["زميلك بيتأخر كل يوم ربع ساعة، وطلب منك متقولش للمدير. هتعمل إيه؟", [
+    "أسكت، مش عايز أعمل مشاكل مع زمايلي",
+    "أكلمه هو الأول بهدوء إن ده بيأثر على الشغل، ولو استمر أبلغ المدير",
+    "أبلغ المدير على طول من غير ما أكلمه",
+    "أتأخر أنا كمان، طالما محدش بيتحاسب"]],
+  ["الفرع زحمة جدًا، وفي 3 زباين مستنيين، وانت الوحيد الفاضي. هتعمل إيه؟", [
+    "أخلص مع زبون واحد للآخر، والباقي يستنوا دورهم",
+    "أرحب بالتلاتة وأقولهم ثواني وأكون معاكم، وأدّي كل واحد مقاسه يجربه وأنا بخلص مع التاني",
+    "أطلب من الزباين يرجعوا كمان شوية",
+    "أنده زميلي يساعدني حتى لو هو في البريك"]],
+  ["المدير طلب منك ترتب الرفوف بطريقة جديدة، وانت شايف إن الطريقة القديمة أحسن. هتعمل إيه؟", [
+    "أنفذ كلامه الأول، وبعدين أقوله رأيي بهدوء، ولو اقتنع نغيّر",
+    "أسيبها على الطريقة القديمة لأنها أحسن",
+    "أنفذ ومقولش رأيي خالص",
+    "مش هنفذ غير لما يقتنع برأيي"]],
+  ["زبون سألك على سعر موديل، وانت مش متأكد منه. هتعمل إيه؟", [
+    "أقول سعر تقريبي عشان مضيعش وقته",
+    "أقوله ثانية واحدة يا فندم، وأتأكد من السيستم أو من المدير وأرجعله بالسعر الصح",
+    "أقوله يسأل الكاشير",
+    "أقوله السعر مكتوب على العلبة يبص عليه"]],
+  ["زبون بعت على صفحتنا صورة كوتشي وكتب: بكام؟ هترد إزاي؟", [
+    "أكتب السعر بس",
+    "أرد بالسعر والمقاسات المتاحة، وأسأله مقاسه كام وهيجي الفرع ولا عايز توصيل",
+    "أرد عليه لما أخلص الرسايل اللي قبله، حتى لو بعد كام ساعة",
+    "أبعتله لينك الصفحة يشوف الأسعار بنفسه"]]
+];
+
+const STAGES = [
+  { size: 41, name: "التعارف", sub: "اسمك والشروط" },
+  { size: 42, name: "بياناتك", sub: "سكنك ومواصلاتك" },
+  { size: 43, name: "الشغل والخبرة", sub: "الوظيفة اللي عايزها" },
+  { size: 44, name: "المواعيد", sub: "دراستك وشيفتك" },
+  { size: 45, name: "تحدي المواقف", sub: "8 مواقف من الفرع" }
+];
+const CHEERS = ["حلو", "تمام كده", "ماشي", "جميل", "عاش", "كده تمام", "اشطا"];
+
+// ============ أدوات ============
+const AR = "٠١٢٣٤٥٦٧٨٩";
+const toLatin = s => String(s).replace(/[٠-٩]/g, d => AR.indexOf(d));
+const first = s => String(s).trim().split(/\s+/)[0] || "";
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, reduced ? 0 : ms));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const A = {};
+let points = 0, streak = 0, lastAnswerAt = 0;
+
+// ============ السيناريو ============
+const STEPS = [
+  // ---- 41
+  { stage: 0, key: "name", type: "text", bot: ["أهلًا بيك في مستر بلاك.", "قبل ما نبدأ، اسمك إيه؟ اكتبه تلاتي زي البطاقة."],
+    placeholder: "مثال: أحمد محمد علي",
+    validate: v => /^\s*\S+(\s+\S+){2,}\s*$/.test(v) ? "" : "اكتب اسمك تلاتي على الأقل، زي: أحمد محمد علي" },
+  { stage: 0, key: "_terms", type: "info",
+    bot: [() => `أهلًا يا ${first(A.name)}، نورتنا.`, "دي المرتبات والشروط بوضوح. اقراها كويس، هسألك عليها حالًا."] },
+  { stage: 0, key: "pay", type: "choice", options: C.pay, bot: ["سؤال سريع: المرتبات بتتصرف امتى؟"] },
+
+  // ---- 42
+  { stage: 1, key: "phone", type: "text", inputmode: "tel", placeholder: "01xxxxxxxxx",
+    bot: ["رقم موبايلك اللي عليه واتساب؟"],
+    clean: v => toLatin(v).replace(/[\s-]/g, ""),
+    validate: v => /^01[0125]\d{8}$/.test(v) ? "" : "اكتب رقم موبايل مصري من 11 رقم، يبدأ بـ 010 أو 011 أو 012 أو 015" },
+  { stage: 1, key: "age", type: "number", placeholder: "مثال: 24", bot: ["سنك كام؟"],
+    clean: v => toLatin(v).trim(),
+    validate: v => { const n = +v; return Number.isInteger(n) && n >= 16 && n <= 70 ? "" : "اكتب سنك بالأرقام، ولازم يكون 16 سنة أو أكتر"; },
+    map: v => (+v > 45 ? "أكبر من 45" : String(+v)) },
+  { stage: 1, key: "gender", type: "choice", options: C.gender, bot: ["النوع؟"] },
+  { stage: 1, key: "marital", type: "choice", options: C.marital, bot: ["الحالة الاجتماعية؟"] },
+  { stage: 1, key: "mil", type: "choice", options: C.mil, bot: ["موقفك من التجنيد؟"],
+    auto: () => (A.gender === "أنثى" ? "لا ينطبق (أنثى)" : null) },
+  { stage: 1, key: "area", type: "choice", options: C.area, bot: ["ساكن فين؟"] },
+  { stage: 1, key: "address", type: "text", placeholder: "المنطقة والشارع وأقرب علامة", bot: ["اكتب العنوان بالتفصيل."],
+    validate: v => v.trim().length >= 12 ? "" : "العنوان قصير، اكتب المنطقة والشارع وأقرب علامة مميزة" },
+  { stage: 1, key: "commute", type: "choice", options: C.commute,
+    bot: ["الفرع في شارع عمر بن عبد العزيز مع شارع سعيد، طنطا.", "بتاخد وقت قد إيه عشان توصله؟"] },
+  { stage: 1, key: "transport", type: "choice", options: C.transport, bot: ["وهتيجي بإيه؟"] },
+  { stage: 1, key: "ret", type: "choice", options: C.ret, bot: ["لو الشيفت خلص الساعة 12 بالليل، تقدر ترجع بيتك؟"] },
+
+  // ---- 43
+  { stage: 2, key: "job", type: "choice", bot: ["متقدم لأنهي وظيفة؟"],
+    options: () => (A.gender === "أنثى" ? [JOB.mod] : [JOB.sales, JOB.mod, JOB.asst, JOB.mgr]),
+    hint: () => (A.gender === "أنثى" ? "البنات مقبولين في وظيفة الموديريتور، وينفع تشتغلي من البيت" : ""),
+    label: v => JOB_SHORT[v] || v },
+  { stage: 2, key: "mode", type: "choice", options: C.mode, bot: ["عايز تشتغل منين؟"],
+    auto: () => (A.job !== JOB.mod ? "أنا مش متقدم لوظيفة الموديريتور" : null) },
+  { stage: 2, key: "exp", type: "choice", options: C.exp, bot: ["خبرتك في البيع أو خدمة العملاء قد إيه؟"] },
+  { stage: 2, key: "expf", type: "multi", options: C.expf, exclusive: "مفيش خبرة",
+    bot: ["الخبرة دي كانت في إيه؟ اختار كل اللي ينطبق."],
+    auto: () => (A.exp === "مفيش" ? ["مفيش خبرة"] : null) },
+  { stage: 2, key: "lastjob", type: "long", placeholder: "اسم المكان، قعدت قد إيه، وسبته ليه",
+    bot: ["آخر مكان اشتغلت فيه: اسمه إيه، قعدت فيه قد إيه، وسبته ليه؟"],
+    auto: () => (A.exp === "مفيش" ? "لم أعمل من قبل" : null),
+    min: 10, validate: v => v.trim().length >= 10 ? "" : "اكتب تفاصيل أكتر شوية" },
+  { stage: 2, key: "sal", type: "choice", options: C.sal, bot: ["المرتب الأساسي اللي يناسبك، من غير العمولة؟"] },
+  { stage: 2, key: "working", type: "choice", options: C.working, bot: ["بتشتغل حاليًا في مكان تاني؟"] },
+  { stage: 2, key: "start", type: "choice", options: C.start, bot: ["تقدر تبدأ امتى؟"] },
+
+  // ---- 44
+  { stage: 3, key: "student", type: "choice", options: C.student, bot: ["انت طالب حاليًا؟"] },
+  { stage: 3, key: "qual", type: "choice", options: C.qual, bot: ["مؤهلك الدراسي؟"] },
+  { stage: 3, key: "shift", type: "choice", options: C.shift,
+    bot: ["عندنا شيفتين حاليًا، وفي كل شيفت ساعة بريك.", "أنهي شيفت يناسبك؟"] },
+  { stage: 3, key: "unavail", type: "multi", options: C.unavail, exclusive: "متاح كل الأيام",
+    bot: ["في أيام مش هتقدر تشتغل فيها خالص؟"], hint: "لو متاح كل الأيام اختار: متاح كل الأيام" },
+  { stage: 3, key: "lectures", type: "long", placeholder: "مثال: السبت والتلات من 9 لـ 1",
+    bot: ["اكتب أيام ومواعيد المحاضرات اللي لازم تحضرها."],
+    auto: () => (A.student !== "أيوه، طالب" ? "" : null),
+    validate: v => v.trim().length >= 3 ? "" : "اكتب مواعيدك ولو باختصار" },
+  { stage: 3, key: "fri", type: "choice", options: C.fri,
+    bot: ["الشغل يوم الجمعة والإجازات الرسمية عادي، وبيتعوض بإجازة أو فلوس. يناسبك؟"] },
+  { stage: 3, key: "pen", type: "choice", options: C.pen,
+    bot: ["بعد الأسبوع التجريبي في عقد رسمي فيه شرط جزائي لو حد ساب الشغل من غير إخطار. موافق؟"] },
+
+  // ---- 45
+  ...SJT.slice(0, 4).map((q, i) => sjtStep(i, q)),
+  { stage: 4, key: "focus", type: "choice", options: C.focus, bot: ["استراحة صغيرة: اختار كلمة كوتشي."] },
+  ...SJT.slice(4).map((q, i) => sjtStep(i + 4, q)),
+  { stage: 4, key: "pitch", type: "long", placeholder: "اكتب الكلام اللي هتقوله كأنك واقف قدامه",
+    bot: ["التحدي الأخير.", "زبون ماسك كوتشي أبيض سعره 1,500 جنيه وقالك: غالي. هترد عليه تقول إيه بالظبط؟"],
+    min: 60, validate: v => v.trim().length >= 60 ? "" : "اكتب رد أطول شوية، 60 حرف على الأقل" },
+  { stage: 4, key: "idays", type: "multi", options: C.idays, bot: [() => `برافو يا ${first(A.name)}.`, "لو اتقبلت مبدئيًا، أنهي أيام تناسبك للإنترفيو؟"] },
+  { stage: 4, key: "itime", type: "choice", options: C.itime, bot: ["وأنهي وقت؟"] },
+  { stage: 4, key: "consent", type: "choice", options: C.consent, bot: ["آخر حاجة: قريت كل الشروط وموافق عليها؟"] }
+];
+function sjtStep(i, [q, opts]) {
+  return { stage: 4, key: "sjt" + (i + 1), type: "cards", options: opts, shuffle: true,
+    bot: i === 0 ? ["دلوقتي تحدي المواقف: 8 مواقف من شغل الفرع.", "اختار اللي هتعمله فعلًا، مش اللي شايفه مثالي.", `موقف 1 من 8: ${q}`] : [`موقف ${i + 1} من 8: ${q}`] };
+}
+
+const QUESTIONS = STEPS.filter(s => s.type !== "info").length;
+let answered = 0, stageShown = -1;
+
+// ============ واجهة ============
+const $ = id => document.getElementById(id);
+const thread = $("thread"), wrap = $("threadWrap"), dock = $("dock");
+const scrollDown = () => requestAnimationFrame(() => { wrap.scrollTop = wrap.scrollHeight; });
+function add(el) { thread.appendChild(el); scrollDown(); return el; }
+
+let lastWho = "";
+function line(who, contentNode) {
+  const l = document.createElement("div"); l.className = "line " + who;
+  if (who === "bot") {
+    const av = document.createElement("div"); av.className = "ava" + (lastWho === "bot" ? " ghost" : "");
+    av.innerHTML = `<img src="${MARK}" alt="">`;
+    l.appendChild(av);
+  }
+  l.appendChild(contentNode); lastWho = who; return add(l);
+}
+function bubble(text, who) { const m = document.createElement("div"); m.className = "msg"; m.textContent = text; return line(who, m); }
+async function say(text) {
+  const t = document.createElement("div"); t.className = "msg typing"; t.innerHTML = "<i></i><i></i><i></i>";
+  const prev = lastWho; const l = line("bot", t);
+  await sleep(Math.min(1000, 350 + text.length * 12));
+  l.remove(); lastWho = prev;
+  bubble(text, "bot");
+  await sleep(120);
+}
+function stageBadge(i) {
+  const d = document.createElement("div"); d.className = "stage-badge";
+  d.innerHTML = `<span class="num">${STAGES[i].size}</span><span>مقاس ${STAGES[i].size}: ${STAGES[i].name}</span>`;
+  add(d); lastWho = "";
+}
+function termsCard() {
+  const d = document.createElement("div"); d.className = "terms";
+  d.innerHTML = `
+    <h3>المرتب الشهري حسب الخبرة</h3>
+    <div class="jobs">
+      <div class="job"><b>مسؤول مبيعات</b><span class="pay">7,000 – 10,000</span><small>+ عمولة من 1% لحد 1.5% حسب التارجت</small></div>
+      <div class="job"><b>موديريتور</b><span class="pay">7,000 – 10,000</span><small>+ عمولة، وينفع من البيت</small></div>
+      <div class="job"><b>مساعد مدير فرع</b><span class="pay">8,000 – 12,000</span><small>+ عمولة</small></div>
+      <div class="job"><b>مدير فرع</b><span class="pay">8,000 – 15,000</span><small>+ عمولة على مبيعات الفرع كله</small></div>
+    </div>
+    <h3>الشروط</h3>
+    <ul>
+      <li>السن من 18 لـ 32 سنة.</li>
+      <li>خبرة سنة على الأقل في البيع أو خدمة العملاء.</li>
+      <li>البنات مقبولين في وظيفة الموديريتور بس.</li>
+      <li>أقصى وقت وصول للفرع 45 دقيقة.</li>
+      <li>شيفت صباحي 12 الضهر لـ 8 بالليل، أو مسائي 4 العصر لـ 12 بالليل.</li>
+      <li>الشغل الجمعة والإجازات عادي، وبيتعوض.</li>
+      <li>أسبوع تجريبي مدفوع، وبعده عقد فيه شرط جزائي.</li>
+      <li>المرتبات بتتصرف من يوم 5 لـ يوم 8 في الشهر.</li>
+    </ul>`;
+  add(d); lastWho = "";
+}
+
+// ---- journey (laptop)
+const journey = $("journey");
+STAGES.forEach(s => { const li = document.createElement("li"); li.innerHTML = `<span class="dot">${s.size}</span><span class="jt"><b>${s.name}</b><small>${s.sub}</small></span>`; journey.appendChild(li); });
+
+function setProgress(stage) {
+  const pct = Math.round((answered / QUESTIONS) * 100);
+  $("fill").style.width = pct + "%";
+  const r = $("runner"); r.style.insetInlineStart = `calc(10px + (100% - 54px) * ${pct / 100})`;
+  r.classList.toggle("late", pct > 75);
+  r.classList.remove("hop"); void r.offsetWidth; r.classList.add("hop");
+  $("pct").textContent = pct + "%"; $("sidePct").textContent = pct + "%";
+  $("stageSize").textContent = STAGES[stage].size; $("stageName").textContent = STAGES[stage].name;
+  const left = QUESTIONS - answered; $("left").textContent = left > 0 ? `فاضل ${left} سؤال` : "خلصت";
+  [...$("stops").children].forEach((s, i) => s.classList.toggle("on", i < stage || (i === stage && pct >= 100)));
+  [...journey.children].forEach((li, i) => { li.className = i < stage ? "done" : i === stage ? "now" : ""; });
+}
+function bump(el) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
+function floatPoints(n, from) {
+  const r = (from || $("ptsPill")).getBoundingClientRect();
+  const f = document.createElement("div"); f.className = "float"; f.textContent = "+" + n;
+  f.style.left = (r.left + r.width / 2 - 14) + "px"; f.style.top = (r.top - 6) + "px";
+  document.body.appendChild(f); setTimeout(() => f.remove(), 1000);
+}
+function addPoints(n, from) {
+  points += n; $("pts").textContent = points; $("sidePts").textContent = points;
+  bump($("ptsPill")); floatPoints(n, from);
+}
+function updateStreak() {
+  const now = Date.now();
+  streak = now - lastAnswerAt < 15000 ? streak + 1 : 1;
+  lastAnswerAt = now;
+  const s = $("streak");
+  if (streak >= 3) { s.hidden = false; $("streakN").textContent = streak; bump(s); } else s.hidden = true;
+  return streak;
+}
+
+// ---- confetti
+function confetti(ms = 1400) {
+  if (reduced) return;
+  const c = document.createElement("canvas"); c.className = "confetti"; document.body.appendChild(c);
+  const ctx = c.getContext("2d"); const dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const cols = ["#fff000", "#ffffff", "#ff3d8b", "#2ee6ff"];
+  const ps = Array.from({ length: 140 }, () => ({ x: innerWidth / 2, y: innerHeight * .45, vx: (Math.random() - .5) * 14, vy: -Math.random() * 13 - 4, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: pick(cols) }));
+  const t0 = performance.now();
+  (function frame(t) {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    ps.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); });
+    if (t - t0 < ms) requestAnimationFrame(frame); else c.remove();
+  })(t0);
+}
+function levelUp(size, name) {
+  return new Promise(res => {
+    const o = document.createElement("div"); o.className = "levelup"; o.setAttribute("role", "status");
+    o.innerHTML = `<div class="lv"><div class="big">${size}</div><div class="t1">قفلت مقاس ${size}</div><div class="t2">+50</div><div class="t3">${name} خلص. دوس في أي حتة وكمّل</div></div>`;
+    document.body.appendChild(o); confetti();
+    const done = () => { o.remove(); res(); };
+    o.addEventListener("click", done);
+    setTimeout(() => { if (o.isConnected) done(); }, reduced ? 600 : 1700);
+  });
+}
+
+// ============ إدخال الإجابة ============
+function ask(step) {
+  return new Promise(resolve => {
+    dock.innerHTML = "";
+    const val = x => (typeof x === "function" ? x() : x);
+    const hintText = val(step.hint);
+    if (hintText) { const h = document.createElement("div"); h.className = "hint"; h.textContent = hintText; dock.appendChild(h); }
+    const err = document.createElement("div"); err.className = "err"; err.setAttribute("role", "alert");
+
+    if (step.type === "choice" || step.type === "cards") {
+      let opts = val(step.options);
+      if (step.shuffle) opts = shuffle(opts);
+      const box = document.createElement("div"); box.className = step.type === "cards" ? "cards" : "chips";
+      opts.forEach((o, i) => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "chip";
+        const shown = step.label ? step.label(o) : o;
+        if (step.type === "cards") { b.innerHTML = `<span class="k">${"أبجد"[i]}</span><span></span>`; b.lastChild.textContent = shown; }
+        else b.textContent = shown;
+        b.addEventListener("click", () => resolve({ value: o, shown, el: b }));
+        box.appendChild(b);
+      });
+      dock.appendChild(box);
+      return;
+    }
+
+    if (step.type === "multi") {
+      const picked = new Set(); const opts = val(step.options);
+      const box = document.createElement("div"); box.className = "chips";
+      const send = document.createElement("button"); send.type = "button"; send.className = "send"; send.textContent = "تمام"; send.disabled = true;
+      const btns = opts.map(o => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = o; b.setAttribute("aria-pressed", "false");
+        b.addEventListener("click", () => {
+          if (picked.has(o)) picked.delete(o);
+          else { if (o === step.exclusive) picked.clear(); else picked.delete(step.exclusive); picked.add(o); }
+          btns.forEach((x, i) => x.setAttribute("aria-pressed", picked.has(opts[i]) ? "true" : "false"));
+          send.disabled = picked.size === 0;
+        });
+        box.appendChild(b); return b;
+      });
+      send.addEventListener("click", () => { const list = opts.filter(o => picked.has(o)); resolve({ value: list, shown: list.join("، "), el: send }); });
+      dock.appendChild(box); dock.appendChild(send);
+      return;
+    }
+
+    const row = document.createElement("form"); row.className = "row";
+    const input = document.createElement(step.type === "long" ? "textarea" : "input");
+    input.className = "field"; input.id = "f_" + step.key; input.placeholder = step.placeholder || "";
+    input.setAttribute("aria-label", step.placeholder || "إجابتك");
+    if (step.type === "number") input.inputMode = "numeric";
+    if (step.inputmode) input.inputMode = step.inputmode;
+    if (step.type !== "long") { input.type = "text"; input.autocomplete = "off"; }
+    const send = document.createElement("button"); send.type = "submit"; send.className = "send"; send.textContent = "ابعت";
+    row.append(input, send); dock.appendChild(row);
+    if (step.min) {
+      const m = document.createElement("div"); m.className = "meter"; m.innerHTML = "<i></i>";
+      const upd = () => { const n = input.value.trim().length; m.firstChild.style.width = Math.min(100, n / step.min * 100) + "%"; m.classList.toggle("ok", n >= step.min); };
+      input.addEventListener("input", upd); dock.appendChild(m);
+    }
+    dock.appendChild(err);
+    row.addEventListener("submit", e => {
+      e.preventDefault();
+      let v = input.value; if (step.clean) v = step.clean(v);
+      const msg = step.validate ? step.validate(v) : (v.trim() ? "" : "اكتب إجابتك");
+      if (msg) { err.textContent = msg; input.focus(); return; }
+      resolve({ value: step.map ? step.map(v) : v.trim(), shown: v.trim(), el: send });
+    });
+    if (window.matchMedia("(min-width: 960px)").matches) setTimeout(() => input.focus({ preventScroll: true }), 50);
+  });
+}
+
+// ============ الإرسال لجوجل فورم ============
+async function submit() {
+  const body = new URLSearchParams();
+  Object.entries(ENTRY).forEach(([k, id]) => {
+    const v = A[k];
+    if (Array.isArray(v)) v.forEach(x => body.append("entry." + id, x));
+    else if (v !== undefined && v !== "") body.append("entry." + id, v);
+  });
+  body.append("fvv", "1"); body.append("pageHistory", "0,1,2,3,4,5");
+  try { await fetch(FORM_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() }); return true; }
+  catch (e) { return false; }
+}
+
+function barcode(seed) {
+  const d = document.createElement("div"); d.className = "barcode";
+  let h = 0; for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  for (let i = 0; i < 46; i++) { h = (h * 1103515245 + 12345) >>> 0; const b = document.createElement("i"); b.style.width = (1 + (h % 4)) + "px"; b.style.opacity = i % 7 === 0 ? ".35" : "1"; d.appendChild(b); }
+  return d;
+}
+
+async function finish() {
+  dock.innerHTML = "";
+  await say(`خلصت يا ${first(A.name)}. ده كارت التقديم بتاعك.`);
+  const sent = await submit();
+  const ref = "MB-" + Date.now().toString().slice(-6);
+  const d = document.createElement("div"); d.className = "label";
+  d.innerHTML = `
+    <div class="label-head"><img src="${MARK}" alt=""><span class="ref">${ref}</span></div>
+    <div class="label-body"><div class="who"><div class="name"></div><div class="job"></div></div><div class="size"><b>45</b><span>آخر مقاس</span></div></div>
+    <div class="label-stats"><div><b>100%</b><span>اكتمال</span></div><div><b>${points}</b><span>نقطة</span></div><div><b>5/5</b><span>مقاسات</span></div></div>`;
+  d.querySelector(".name").textContent = A.name.trim();
+  d.querySelector(".job").textContent = JOB_SHORT[A.job] || "";
+  d.appendChild(barcode(A.name + ref));
+  add(d); lastWho = ""; confetti(2200);
+  if (sent) await say("طلبك وصلنا. هنراجع كل الطلبات، ولو اتقبلت مبدئيًا هنكلمك على واتساب خلال أسبوعين.");
+  else {
+    await say("الطلب ماتبعتش. اتأكد إن النت شغال وجرب تاني.");
+    const retry = document.createElement("button"); retry.className = "send"; retry.type = "button"; retry.textContent = "ابعت تاني";
+    retry.addEventListener("click", async () => { retry.disabled = true; if (await submit()) { retry.remove(); await say("تمام، طلبك وصلنا."); } else retry.disabled = false; });
+    dock.appendChild(retry);
+  }
+}
+
+// ============ التشغيل ============
+async function run() {
+  for (const step of STEPS) {
+    if (step.stage !== stageShown) {
+      if (stageShown >= 0) { addPoints(50); setProgress(step.stage); await levelUp(STAGES[stageShown].size, STAGES[stageShown].name); }
+      stageShown = step.stage; stageBadge(step.stage); setProgress(step.stage); await sleep(200);
+    }
+    const auto = step.auto ? step.auto() : null;
+    if (auto !== null && auto !== undefined) { A[step.key] = auto; answered++; setProgress(step.stage); continue; }
+    for (const ln of step.bot) await say(typeof ln === "function" ? ln() : ln);
+    if (step.type === "info") { termsCard(); await sleep(500); continue; }
+    const { value, shown, el } = await ask(step);
+    const r = el ? el.getBoundingClientRect() : null;
+    dock.innerHTML = "";
+    A[step.key] = value;
+    bubble(shown, "me");
+    answered++;
+    const s = updateStreak();
+    addPoints(s >= 3 ? 15 : 10);
+    setProgress(step.stage);
+    if (s > 0 && s % 5 === 0) await say(`${pick(CHEERS)}، ${s} إجابات ورا بعض.`);
+    await sleep(120);
+  }
+  addPoints(50);
+  [...$("stops").children].forEach(s => s.classList.add("on"));
+  [...journey.children].forEach(li => li.className = "done");
+  await levelUp(45, STAGES[4].name);
+  await finish();
+}
+
+$("go").addEventListener("click", () => { $("welcome").hidden = true; run(); });
+})();
+</script>
+
+</body>
+</html>

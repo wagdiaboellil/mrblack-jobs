@@ -1,2 +1,5 @@
-# mrblack-jobs
-Mr. Black interactive job application
+# Mr. Black Jobs
+
+صفحة التقديم التفاعلية لمستر بلاك: https://jobs.mrblackeg.com
+
+الإجابات بتتبعت لفورم جوجل المربوط بشيت الفرز.
