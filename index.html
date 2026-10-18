@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#0d0c0a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Cairo:wght@400;500;600;700;800;900&display=swap">
 <style>
 /* Layout: phone = quiet header (logo, points, a five-box size scale 41→45) over the chat and an answer dock.
    Laptop (>=960px) = side panel with the logo, the five sizes as a journey and the score; chat column beside it.
@@ -32,9 +32,9 @@
   --canary: #fff000;     /* brand accent, used sparingly */
   --canary-ink: #141100; /* text on canary */
   --bad: #ff7a66;
-  --display: "Alexandria", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
-  --body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
-  --fig: "Big Shoulders Display", "Alexandria", "Arial Narrow", sans-serif;
+  --display: "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --body: "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --fig: "Big Shoulders Display", "Cairo", "Arial Narrow", sans-serif;
   --r: 14px;
   color-scheme: dark;
 }
@@ -79,7 +79,7 @@ button, input, textarea { font: inherit; color: inherit; }
   .journey li:last-child { border-bottom: 1px solid var(--line); }
   .journey .sz { font-family: var(--fig); font-weight: 700; font-size: 30px; line-height: 1; color: #4a453e; transition: color .3s; }
   .journey .jt { display: grid; line-height: 1.4; }
-  .journey .jt b { font-family: var(--display); font-weight: 600; font-size: 15px; }
+  .journey .jt b { font-family: var(--display); font-weight: 800; font-size: 15px; }
   .journey .jt small { font-size: 12px; }
   .journey li.done { color: var(--ivory); }
   .journey li.done .sz { color: var(--ivory); }
@@ -121,7 +121,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .sizebox.done { background: var(--ivory); border-color: var(--ivory); color: var(--ground); }
 .sizebox.done i { display: none; }
 .stage-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--stone); }
-.stage-line b { color: var(--ivory); font-family: var(--display); font-weight: 600; }
+.stage-line b { color: var(--ivory); font-family: var(--display); font-weight: 800; }
 .stage-line .fig { font-size: 15px; color: var(--ivory); }
 
 /* ---------- thread ---------- */
@@ -148,16 +148,16 @@ button, input, textarea { font: inherit; color: inherit; }
 .stage-badge { align-self: center; margin-block: 22px 10px; display: flex; align-items: center; gap: 12px; color: var(--stone); font-size: 13px; width: 100%; }
 .stage-badge::before, .stage-badge::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .stage-badge .fig { font-size: 22px; font-weight: 700; color: var(--canary); }
-.stage-badge span:last-child { color: var(--ivory); font-family: var(--display); font-weight: 600; }
+.stage-badge span:last-child { color: var(--ivory); font-family: var(--display); font-weight: 800; }
 
 .terms { align-self: stretch; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; gap: 16px; animation: rise .4s both; }
-.terms h3 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--stone); }
+.terms h3 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 14px; color: var(--stone); }
 .jobs { display: grid; }
 .job { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding-block: 12px; border-top: 1px solid var(--line); }
 .job:last-child { border-bottom: 1px solid var(--line); }
-.job b { font-family: var(--display); font-weight: 600; font-size: 15px; }
+.job b { font-family: var(--display); font-weight: 800; font-size: 15px; }
 .job .pay { grid-row: span 2; align-self: center; font-family: var(--fig); font-weight: 700; font-size: 22px; color: var(--canary); direction: ltr; white-space: nowrap; }
-.job .pay.txt { font-family: var(--display); font-weight: 600; font-size: 14px; direction: rtl; text-align: end; white-space: normal; max-width: 12ch; }
+.job .pay.txt { font-family: var(--display); font-weight: 800; font-size: 14px; direction: rtl; text-align: end; white-space: normal; max-width: 12ch; }
 .job small { color: var(--stone); font-size: 12px; }
 .terms ul { margin: 0; padding-inline-start: 18px; display: grid; gap: 6px; font-size: 14px; color: #d9d4ca; }
 .terms ul li::marker { color: var(--canary); }
@@ -177,7 +177,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .chip[aria-pressed="true"] { background: var(--canary); color: var(--canary-ink); border-color: var(--canary); }
 .cards { display: grid; gap: 8px; }
 .cards .chip { border-radius: var(--r); padding: 13px 15px; line-height: 1.6; width: 100%; display: flex; gap: 12px; align-items: flex-start; }
-.cards .chip .k { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-family: var(--display); font-weight: 600; font-size: 12px; color: var(--stone); margin-top: 1px; transition: all .2s; }
+.cards .chip .k { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 12px; color: var(--stone); margin-top: 1px; transition: all .2s; }
 .cards .chip:hover .k { border-color: var(--canary); color: var(--canary); }
 @media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
 .row { display: flex; gap: 8px; align-items: flex-end; }
@@ -185,7 +185,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .field::placeholder { color: #6f695f; }
 .field:focus { border-color: var(--stone); }
 textarea.field { min-height: 104px; }
-.send { flex: none; border: 0; cursor: pointer; background: var(--canary); color: var(--canary-ink); font-family: var(--display); font-weight: 600; padding: 12px 22px; border-radius: var(--r); transition: opacity .2s, transform .1s; }
+.send { flex: none; border: 0; cursor: pointer; background: var(--canary); color: var(--canary-ink); font-family: var(--display); font-weight: 800; padding: 12px 22px; border-radius: var(--r); transition: opacity .2s, transform .1s; }
 .send:active { transform: scale(.97); }
 .send:disabled { opacity: .3; cursor: default; }
 .meter { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--stone); font-variant-numeric: tabular-nums; }
@@ -205,7 +205,7 @@ textarea.field { min-height: 104px; }
 @keyframes settle { from { transform: translateY(14px) scale(.97); opacity: 0; } }
 .lv .tag { font-size: 13px; color: var(--stone); letter-spacing: .02em; }
 .lv .big { font-family: var(--fig); font-weight: 800; font-size: clamp(110px, 26vw, 190px); line-height: .9; color: transparent; -webkit-text-stroke: 2px var(--canary); }
-.lv .t1 { font-family: var(--display); font-weight: 600; font-size: 22px; }
+.lv .t1 { font-family: var(--display); font-weight: 800; font-size: 22px; }
 .lv .t2 { font-family: var(--fig); font-weight: 700; font-size: 20px; color: var(--canary); }
 .lv .t3 { color: var(--stone); font-size: 12px; margin-top: 10px; }
 canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; width: 100%; height: 100%; }
@@ -220,15 +220,37 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 .wbox .t { width: min(160px, 44vw); opacity: .75; animation: fadein 1s .3s both; }
 @keyframes fadein { from { opacity: 0; transform: translateY(8px); } }
 .wbox .rule { width: 48px; height: 1px; background: var(--line); margin-block: 8px; }
-.wbox h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(24px, 5.6vw, 32px); line-height: 1.35; text-wrap: balance; }
+.wbox h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(34px, 10vw, 42px); line-height: 1.2; text-wrap: balance; }
 .wbox p { margin: 0; color: var(--stone); max-width: 38ch; }
 .facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; color: var(--stone); font-size: 13px; }
 .facts span { padding-inline: 14px; }
 .facts span + span { border-inline-start: 1px solid var(--line); }
 .facts b { color: var(--ivory); font-weight: 500; }
-.go { margin-top: 8px; border: 0; cursor: pointer; background: var(--canary); color: var(--canary-ink); font-family: var(--display); font-weight: 600; font-size: 17px; padding: 15px 52px; border-radius: 99px; transition: transform .15s, box-shadow .3s; box-shadow: 0 0 0 0 rgba(255,240,0,0); }
+.go { margin-top: 8px; border: 0; cursor: pointer; background: var(--canary); color: var(--canary-ink); font-family: var(--display); font-weight: 900; font-size: 19px; padding: 14px 52px; border-radius: 99px; transition: transform .15s, box-shadow .3s; box-shadow: 0 0 0 0 rgba(255,240,0,0); }
 .go:hover { box-shadow: 0 0 0 8px rgba(255,240,0,.12); }
 .go:active { transform: scale(.98); }
+
+
+/* welcome with the real branch photo: black-and-white, only the yellow sign keeps its colour */
+.welcome { display: block; padding: 0; }
+.wphoto { position: absolute; inset: 0 0 auto 0; height: 64svh; background: #000 url("assets/branch.jpg") center 62% / cover no-repeat; animation: photoin 1.6s ease-out both; }
+.wphoto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(13,12,10,.35) 0%, rgba(13,12,10,0) 22%, rgba(13,12,10,0) 55%, var(--ground) 100%); }
+@keyframes photoin { from { opacity: 0; transform: scale(1.04); } }
+.welcome .wbox { margin: 50svh auto 0; padding: 0 max(20px, env(safe-area-inset-right, 0px)) 36px max(20px, env(safe-area-inset-left, 0px)); gap: 16px; }
+.wbox .kicker { display: flex; align-items: center; gap: 10px; color: var(--canary); font-size: 12px; letter-spacing: .14em; font-family: var(--fig); font-weight: 600; text-transform: uppercase; direction: ltr; }
+.wbox .kicker img { width: 20px; }
+.wbox .kicker i { width: 28px; height: 1px; background: var(--canary); opacity: .5; }
+.welcome .wbox > .m, .welcome .wbox > .w, .welcome .wbox > .t, .welcome .wbox > .rule { display: none; }
+.wbox .where { color: var(--stone); font-size: 13px; }
+@media (min-width: 960px) {
+  .welcome { display: flex; align-items: center; justify-content: flex-start; padding-inline-start: 7vw; }
+  .wphoto { inset: 0 auto 0 0; width: 52vw; height: auto; background-position: center 60%; }
+  .wphoto::after { background: linear-gradient(to right, rgba(13,12,10,0) 55%, var(--ground) 100%), linear-gradient(to bottom, rgba(13,12,10,.3), rgba(13,12,10,0) 25%, rgba(13,12,10,0) 75%, rgba(13,12,10,.5)); }
+  .welcome .wbox { margin: 0; max-width: 440px; justify-items: start; text-align: start; padding: 0; }
+  .welcome .facts { justify-content: flex-start; }
+  .welcome .facts span:first-child { padding-inline-start: 0; }
+  .wbox h1 { font-size: 52px; }
+}
 
 /* ---------- final: shoebox label ---------- */
 .label { align-self: stretch; border: 3px solid var(--canary); border-radius: 8px; background: var(--surface); overflow: hidden; animation: settle .7s both; max-width: 460px; width: 100%; margin-inline: auto; margin-block: 8px; }
@@ -261,14 +283,16 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 <img class="bgmark" src="assets/mark.png" alt="">
 
 <div class="welcome" id="welcome">
-  <div class="atmos" aria-hidden="true"></div>
+  <div class="wphoto" role="img" aria-label="فرع مستر بلاك في طنطا"></div>
   <div class="wbox">
+    <div class="kicker"><img src="assets/mark.png" alt=""><span>Mr. Black · Tanta</span><i></i><span>Hiring</span></div>
     <img class="m" src="assets/mark.png" alt="">
     <img class="w" src="assets/word.png" alt="Mr. Black">
     <img class="t" src="assets/tag.png" alt="You are the spot.">
     <span class="rule" aria-hidden="true"></span>
-    <h1>عايز تشتغل في مستر بلاك؟</h1>
+    <h1>مستر بلاك هينور بيك</h1>
     <p>محادثة قصيرة بدل الفورم التقليدي. جاوب على مهلك، وقفّل المقاسات من 41 لحد 45.</p>
+    <div class="where">الفرع: شارع عمر بن عبد العزيز مع شارع سعيد، طنطا</div>
     <div class="facts"><span><b>7</b> دقايق</span><span><b>4</b> وظايف</span><span>طنطا</span></div>
     <button class="go" id="go" type="button">ابدأ التقديم</button>
   </div>
