@@ -39,10 +39,6 @@
   color-scheme: dark;
 }
 html { direction: rtl; }
-body { margin: 0; }
-img { max-width: 100%; }
-[hidden] { display: none !important; }
-.shell { height: 100vh; height: 100dvh; }
 html, body { height: 100%; }
 body {
   background: var(--ground);
@@ -234,24 +230,26 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 .go:hover { box-shadow: 0 0 0 8px rgba(255,240,0,.12); }
 .go:active { transform: scale(.98); }
 
-/* ---------- final: shoebox label (ivory sticker) ---------- */
-.label { align-self: center; width: 100%; max-width: 440px; margin-block: 8px; background: var(--ivory); color: #111; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); animation: settle .7s both; }
-.label-head { background: #111; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; direction: ltr; gap: 10px; }
-.label-head img { height: 16px; }
-.label-head .ref { font-family: var(--fig); font-weight: 700; font-size: 14px; color: var(--canary); letter-spacing: .06em; }
-.label-body { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 16px 12px; align-items: end; }
-.label-body .who { min-width: 0; display: grid; gap: 2px; }
-.label-body .name { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.35; }
-.label-body .job { color: #5a554c; font-size: 14px; }
-.label-body .size { text-align: center; border: 1.5px solid #111; border-radius: 6px; padding: 4px 10px 2px; }
-.label-body .size b { display: block; font-family: var(--fig); font-weight: 800; font-size: 46px; line-height: 1; }
-.label-body .size span { font-size: 10px; color: #5a554c; }
-.label-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #d6d0c4; margin-inline: 16px; }
-.label-stats div { padding: 10px 0; display: grid; gap: 0; }
+/* ---------- final: shoebox label ---------- */
+.label { align-self: stretch; border: 3px solid var(--canary); border-radius: 8px; background: var(--surface); overflow: hidden; animation: settle .7s both; max-width: 460px; width: 100%; margin-inline: auto; margin-block: 8px; }
+.label-head { background: var(--canary); color: var(--canary-ink); display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; direction: ltr; gap: 10px; }
+.label-head img { height: 18px; filter: brightness(0); }
+.label-head .ref { font-family: var(--fig); font-weight: 700; font-size: 14px; letter-spacing: .06em; }
+.label-body { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 16px 14px; align-items: end; }
+.label-body .who { min-width: 0; display: grid; gap: 4px; }
+.label-body .name { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.3; }
+.label-body .job { color: var(--stone); font-size: 14px; }
+.label-body .size { text-align: center; }
+.label-body .size b { display: block; font-family: var(--fig); font-weight: 800; font-size: 64px; line-height: 1; color: var(--canary); text-shadow: 3px 3px 0 #5b5500; }
+.label-body .size span { font-size: 12px; color: var(--stone); }
+.label-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px dashed var(--line); }
+.label-stats div { padding: 10px 12px; display: grid; gap: 2px; }
+.label-stats div + div { border-inline-start: 1px dashed var(--line); }
 .label-stats b { font-family: var(--fig); font-weight: 700; font-size: 22px; }
-.label-stats span { font-size: 11px; color: #5a554c; }
-.barcode { height: 38px; margin: 6px 16px 16px; display: flex; gap: 2px; direction: ltr; }
-.barcode i { background: #111; flex: none; height: 100%; }
+.label-stats div:nth-child(1) b { color: var(--canary); }
+.label-stats span { font-size: 12px; color: var(--stone); }
+.barcode { height: 40px; margin: 0 14px 14px; display: flex; gap: 2px; direction: ltr; }
+.barcode i { background: var(--ivory); flex: none; height: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
@@ -353,17 +351,17 @@ const C = {
   consent: ["أيوه، قريت كل الشروط وموافق عليها"]
 };
 const SJT = [
-  ["زبون دخل الفرع متعصب وصوته عالي إن الكوتشي اللي اشتراه من أسبوع نعله اتفك. هتعمل إيه؟", [
+  ["عميل دخل الفرع متعصب وصوته عالي إن الكوتشي اللي اشتراه من أسبوع نعله اتفك. هتعمل إيه؟", [
     "أهديه وأسمعه للآخر، أشوف الفاتورة والكوتشي، وأعرض عليه الحل حسب سياسة الاستبدال، ولو الموضوع أكبر من صلاحياتي أنده المدير",
     "أقوله بهدوء إن ده غالبًا من طريقة الاستخدام ومش عيب صناعة",
     "أنده المدير على طول عشان دي مش مسؤوليتي",
-    "أعتذر وأرجعله فلوسه فورًا عشان ميعملش مشكلة قدام الزباين"]],
-  ["زبون قاس 3 موديلات وفي الآخر قالك: هفكر وأرجعلك. هتعمل إيه؟", [
+    "أعتذر وأرجعله فلوسه فورًا عشان ميعملش مشكلة قدام العملاء"]],
+  ["عميل قاس 3 موديلات وفي الآخر قالك: هفكر وأرجعلك. هتعمل إيه؟", [
     "أقوله براحتك يا فندم، نورتنا",
     "أسأله بلطف إيه اللي مخليه متردد (السعر، المقاس، اللون) وأحاول أحل النقطة دي، ولو لسه مش جاهز آخد رقمه وأبلغه بالجديد",
     "أقوله إن العرض هيخلص النهارده حتى لو ده مش حقيقي، عشان يشتري",
     "أفضل أقنعه وأوريه موديلات تانية لحد ما يشتري أي حاجة"]],
-  ["زبون عاجبه موديل، ومقاسه 44 خلصان. هتعمل إيه؟", [
+  ["عميل عاجبه موديل، ومقاسه 44 خلصان. هتعمل إيه؟", [
     "أقوله للأسف المقاس خلص",
     "أشوف المخزن والفرع التاني الأول، ولو مش موجود أعرض عليه موديل قريب بنفس المقاس وآخد رقمه لو المقاس هينزل تاني",
     "أقنعه يقيس 43 أو 45 وأقوله هيبقى مظبوط",
@@ -373,22 +371,22 @@ const SJT = [
     "أكلمه هو الأول بهدوء إن ده بيأثر على الشغل، ولو استمر أبلغ المدير",
     "أبلغ المدير على طول من غير ما أكلمه",
     "أتأخر أنا كمان، طالما محدش بيتحاسب"]],
-  ["الفرع زحمة جدًا، وفي 3 زباين مستنيين، وانت الوحيد الفاضي. هتعمل إيه؟", [
-    "أخلص مع زبون واحد للآخر، والباقي يستنوا دورهم",
+  ["الفرع زحمة جدًا، وفي 3 عملاء مستنيين، وانت الوحيد الفاضي. هتعمل إيه؟", [
+    "أخلص مع عميل واحد للآخر، والباقي يستنوا دورهم",
     "أرحب بالتلاتة وأقولهم ثواني وأكون معاكم، وأدّي كل واحد مقاسه يجربه وأنا بخلص مع التاني",
-    "أطلب من الزباين يرجعوا كمان شوية",
+    "أطلب من العملاء يرجعوا كمان شوية",
     "أنده زميلي يساعدني حتى لو هو في البريك"]],
   ["المدير طلب منك ترتب الرفوف بطريقة جديدة، وانت شايف إن الطريقة القديمة أحسن. هتعمل إيه؟", [
     "أنفذ كلامه الأول، وبعدين أقوله رأيي بهدوء، ولو اقتنع نغيّر",
     "أسيبها على الطريقة القديمة لأنها أحسن",
     "أنفذ ومقولش رأيي خالص",
     "مش هنفذ غير لما يقتنع برأيي"]],
-  ["زبون سألك على سعر موديل، وانت مش متأكد منه. هتعمل إيه؟", [
+  ["عميل سألك على سعر موديل، وانت مش متأكد منه. هتعمل إيه؟", [
     "أقول سعر تقريبي عشان مضيعش وقته",
     "أقوله ثانية واحدة يا فندم، وأتأكد من السيستم أو من المدير وأرجعله بالسعر الصح",
     "أقوله يسأل الكاشير",
     "أقوله السعر مكتوب على العلبة يبص عليه"]],
-  ["زبون بعت على صفحتنا صورة كوتشي وكتب: بكام؟ هترد إزاي؟", [
+  ["عميل بعت على صفحتنا صورة كوتشي وكتب: بكام؟ هترد إزاي؟", [
     "أكتب السعر بس",
     "أرد بالسعر والمقاسات المتاحة، وأسأله مقاسه كام وهيجي الفرع ولا عايز توصيل",
     "أرد عليه لما أخلص الرسايل اللي قبله، حتى لو بعد كام ساعة",
@@ -456,6 +454,8 @@ const STEPS = [
   { stage: 2, key: "mode", type: "choice", options: C.mode, bot: ["الموديريتور ينفع من البيت أو من الفرع. عايز تشتغل منين؟"],
     auto: () => (A.job !== JOB.mod ? "أنا مش متقدم لوظيفة الموديريتور" : null) },
   { stage: 2, key: "exp", type: "choice", options: C.exp, bot: ["خبرتك في البيع أو خدمة العملاء قد إيه؟"] },
+  { stage: 2, key: "_noexp", type: "info", show: () => A.exp === "مفيش",
+    bot: ["ولا يهمك. اللي معندوش خبرة خالص، مرتبه بيتحدد حسب كفاءته في الأسبوع التجريبي."] },
   { stage: 2, key: "expf", type: "multi", options: C.expf, exclusive: "مفيش خبرة",
     bot: ["الخبرة دي كانت في إيه؟ اختار كل اللي ينطبق."],
     auto: () => (A.exp === "مفيش" ? ["مفيش خبرة"] : null) },
@@ -491,7 +491,7 @@ const STEPS = [
   { stage: 4, key: "focus", type: "choice", options: C.focus, bot: ["استراحة صغيرة: اختار كلمة كوتشي."] },
   ...SJT.slice(4).map((q, i) => sjtStep(i + 4, q)),
   { stage: 4, key: "pitch", type: "long", placeholder: "اكتب الكلام اللي هتقوله كأنك واقف قدامه",
-    bot: ["التحدي الأخير.", "زبون ماسك كوتشي أبيض سعره 1,500 جنيه وقالك: غالي. هترد عليه تقول إيه بالظبط؟"],
+    bot: ["التحدي الأخير.", "عميل ماسك كوتشي أبيض سعره 1,500 جنيه وقالك: غالي. هترد عليه تقول إيه بالظبط؟"],
     min: 60, validate: v => v.trim().length >= 60 ? "" : "اكتب رد أطول شوية، 60 حرف على الأقل" },
   { stage: 4, key: "idays", type: "multi", options: C.idays, bot: [() => `برافو يا ${first(A.name)}.`, "لو اتقبلت مبدئيًا، أنهي أيام تناسبك للإنترفيو؟"] },
   { stage: 4, key: "itime", type: "choice", options: C.itime, bot: ["وأنهي وقت؟"] },
@@ -552,6 +552,7 @@ function termsCard() {
     <ul>
       <li>السن من 18 لـ 32 سنة.</li>
       <li>خبرة سنة على الأقل في البيع أو خدمة العملاء.</li>
+      <li>اللي معندوش خبرة خالص، مرتبه بيتحدد حسب كفاءته في الأسبوع التجريبي.</li>
       <li>البنات مقبولين في وظيفة الموديريتور بس.</li>
       <li>شيفت صباحي 12 الضهر لـ 8 بالليل، أو مسائي 4 العصر لـ 12 بالليل، والشيفتات بتتبدل كل أسبوع.</li>
       <li>4 أيام إجازة في الشهر، والإجازات ممنوعة الخميس والجمعة.</li>
@@ -732,7 +733,7 @@ async function finish() {
   const d = document.createElement("div"); d.className = "label";
   d.innerHTML = `
     <div class="label-head"><img src="${MARK}" alt=""><span class="ref">${ref}</span></div>
-    <div class="label-body"><div class="who"><div class="name"></div><div class="job"></div></div><div class="size"><b>45</b><span>SIZE</span></div></div>
+    <div class="label-body"><div class="who"><div class="name"></div><div class="job"></div></div><div class="size"><b>45</b><span>آخر مقاس</span></div></div>
     <div class="label-stats"><div><b>100%</b><span>اكتمال</span></div><div><b>${points}</b><span>نقطة</span></div><div><b>5/5</b><span>مقاسات</span></div></div>`;
   d.querySelector(".name").textContent = A.name.trim();
   d.querySelector(".job").textContent = JOB_SHORT[A.job] || "";
@@ -756,8 +757,9 @@ async function run() {
     }
     const auto = step.auto ? step.auto() : null;
     if (auto !== null && auto !== undefined) { A[step.key] = auto; answered++; doneIn[step.stage]++; setProgress(step.stage); continue; }
+    if (step.show && !step.show()) continue;
     for (const ln of step.bot) await say(typeof ln === "function" ? ln() : ln);
-    if (step.type === "info") { termsCard(); await sleep(500); continue; }
+    if (step.type === "info") { if (step.key === "_terms") { termsCard(); await sleep(500); } continue; }
     const { value, shown } = await ask(step);
     dock.innerHTML = "";
     A[step.key] = value;
