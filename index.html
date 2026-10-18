@@ -20,18 +20,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;700;900&family=Bungee&family=Readex+Pro:wght@300;400;500;600&display=swap">
 <style>
 /* Layout: phone = sticky game header + chat + answer dock. Laptop (>=960px) = side panel with logo, stage journey and points; chat column beside it.
-   Committed single look: Mr. Black canary on black, with pink/cyan only for celebration moments. */
+   Look: Mr. Black canary on black. Each size (41→45) carries its own accent so the page changes colour as you progress. */
 :root {
   --ink: #000000;
   --panel: #0f0f0f;
-  --bubble: #161616;
+  --bubble: #171717;
   --edge: #2a2a2a;
   --canary: #fff000;
-  --canary-dim: #4d4800;
   --paper: #ffffff;
-  --muted: #9a9a9a;
-  --pink: #ff3d8b;
-  --cyan: #2ee6ff;
+  --muted: #a0a0a0;
+  --c41: #2ee6ff;   /* cyan */
+  --c42: #ff3d8b;   /* pink */
+  --c43: #9dff3a;   /* lime */
+  --c44: #ff8a1f;   /* orange */
+  --c45: #fff000;   /* canary */
+  --acc: var(--c41);
   --bad: #ff6b5a;
   --display: "Alexandria", "Readex Pro", "Segoe UI", Tahoma, sans-serif;
   --body: "Readex Pro", "Segoe UI", Tahoma, sans-serif;
@@ -59,8 +62,12 @@ button, input, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 3px solid var(--canary); outline-offset: 2px; }
 .num { font-family: var(--game); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
 
-/* faint giant M in the background, like the brand posters */
-.bgmark { position: fixed; inset-inline-end: -8vw; bottom: -10vh; width: min(70vw, 560px); opacity: .07; pointer-events: none; z-index: 0; }
+/* ambient colour that follows the current size */
+.glow { position: fixed; inset: 0; pointer-events: none; z-index: 0; background:
+  radial-gradient(60vmax 40vmax at 0% 0%, color-mix(in srgb, var(--acc) 16%, transparent), transparent 70%),
+  radial-gradient(50vmax 40vmax at 100% 100%, color-mix(in srgb, var(--canary) 9%, transparent), transparent 70%);
+  transition: background 1s; }
+.bgmark { position: fixed; inset-inline-start: -8vw; bottom: -10vh; width: min(70vw, 560px); opacity: .06; pointer-events: none; z-index: 0; }
 
 .shell { position: relative; z-index: 1; height: 100%; display: flex; }
 
@@ -71,10 +78,10 @@ button, input, textarea { font: inherit; color: inherit; }
     display: flex; flex-direction: column; gap: 28px;
     width: 380px; flex: none; height: 100%;
     padding-block: 40px;
-    padding-left: max(32px, env(safe-area-inset-left, 0px));
-    padding-right: 32px;
+    padding-left: 32px;
+    padding-right: max(32px, env(safe-area-inset-right, 0px));
     border-inline-end: 1px solid var(--edge);
-    background: linear-gradient(180deg, #0b0b00, var(--ink) 40%);
+    background: rgba(0,0,0,.55);
     overflow-y: auto;
   }
   .side .lock { display: grid; justify-items: start; gap: 14px; }
@@ -82,34 +89,31 @@ button, input, textarea { font: inherit; color: inherit; }
   .side .lock .w { width: 260px; }
   .side .lock .t { width: 180px; opacity: .85; }
   .journey { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-  .journey li { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 12px; color: var(--muted); transition: background .3s, color .3s; }
-  .journey .dot { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--edge); display: grid; place-items: center; font-family: var(--game); font-size: 15px; flex: none; transition: all .3s; }
+  .journey li { --c: var(--edge); display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 12px; color: var(--muted); transition: background .3s, color .3s; }
+  .journey .dot { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #333; display: grid; place-items: center; font-family: var(--game); font-size: 15px; flex: none; transition: all .3s; }
   .journey li.done { color: var(--paper); }
-  .journey li.done .dot { background: var(--canary); border-color: var(--canary); color: var(--ink); }
-  .journey li.now { background: #161600; color: var(--paper); }
-  .journey li.now .dot { border-color: var(--canary); color: var(--canary); box-shadow: 0 0 0 6px rgba(255,240,0,.12); animation: pulse 1.6s ease-in-out infinite; }
+  .journey li.done .dot { background: var(--c); border-color: var(--c); color: var(--ink); }
+  .journey li.now { background: color-mix(in srgb, var(--c) 12%, transparent); color: var(--paper); }
+  .journey li.now .dot { border-color: var(--c); color: var(--c); animation: pulse 1.6s ease-in-out infinite; }
   .journey .jt { display: grid; line-height: 1.35; }
   .journey .jt b { font-family: var(--display); font-weight: 700; font-size: 15px; }
   .journey .jt small { font-size: 12px; color: var(--muted); }
   .side .bank { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .side .bank div { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; padding: 12px 14px; display: grid; }
-  .side .bank b { font-family: var(--game); font-size: 26px; color: var(--canary); line-height: 1.2; }
+  .side .bank b { font-family: var(--game); font-size: 26px; line-height: 1.2; }
+  .side .bank div:first-child b { color: var(--canary); }
+  .side .bank div:last-child b { color: var(--acc); transition: color .6s; }
   .side .bank span { font-size: 12px; color: var(--muted); }
   .top .brandrow .lockup { display: none; }
 }
-@keyframes pulse { 50% { box-shadow: 0 0 0 10px rgba(255,240,0,0); } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 45%, transparent); } 50% { box-shadow: 0 0 0 10px transparent; } }
 
 /* ---------- main column ---------- */
 .main { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; }
 .col { width: 100%; max-width: 680px; margin: 0 auto; }
 
 /* ---------- game header ---------- */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: rgba(0,0,0,.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--edge);
-}
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: rgba(0,0,0,.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--edge); }
 .top .col { display: grid; gap: 10px; padding-block: 12px 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .brandrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .lockup { display: flex; align-items: center; gap: 10px; direction: ltr; }
@@ -118,54 +122,67 @@ button, input, textarea { font: inherit; color: inherit; }
 .hud { display: flex; align-items: center; gap: 8px; margin-inline-start: auto; }
 .pill { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; background: var(--panel); border: 1px solid var(--edge); font-size: 13px; white-space: nowrap; }
 .pill .num { font-size: 16px; color: var(--canary); }
-.pill.streak { border-color: var(--pink); color: var(--pink); }
-.pill.streak .num { color: var(--pink); }
+.pill.streak { border-color: var(--c42); color: var(--c42); }
+.pill.streak .num { color: var(--c42); }
 .pill.bump { animation: bump .45s ease; }
 @keyframes bump { 35% { transform: scale(1.18) rotate(-3deg); } }
 
 .track { position: relative; height: 54px; }
 .lane { position: absolute; inset-inline: 10px; top: 30px; height: 8px; border-radius: 99px; background: repeating-linear-gradient(90deg, #222 0 10px, #1a1a1a 10px 20px); }
-.lane-fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--canary), #ffd000); box-shadow: 0 0 14px rgba(255,240,0,.55); transition: width .6s cubic-bezier(.2,.9,.2,1.1); }
+.lane-fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0%; border-radius: 99px; background: linear-gradient(270deg, var(--c41), var(--c42), var(--c43), var(--c44), var(--c45)); background-size: 500% 100%; background-position: 100% 0; box-shadow: 0 0 14px color-mix(in srgb, var(--acc) 60%, transparent); transition: width .6s cubic-bezier(.2,.9,.2,1.1), background-position .6s; }
 .stops { position: absolute; inset-inline: 10px; top: 24px; display: flex; justify-content: space-between; pointer-events: none; }
 .stop { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 2px solid #333; display: grid; place-items: center; font-family: var(--game); font-size: 8px; color: #666; transition: all .3s; }
-.stop.on { background: var(--canary); border-color: var(--canary); color: var(--ink); }
+.stop.on { color: var(--ink); }
+.stop.on:nth-child(1) { background: var(--c41); border-color: var(--c41); }
+.stop.on:nth-child(2) { background: var(--c42); border-color: var(--c42); }
+.stop.on:nth-child(3) { background: var(--c43); border-color: var(--c43); }
+.stop.on:nth-child(4) { background: var(--c44); border-color: var(--c44); }
+.stop.on:nth-child(5) { background: var(--c45); border-color: var(--c45); }
 .runner { position: absolute; top: 0; inset-inline-start: 10px; transition: inset-inline-start .6s cubic-bezier(.2,.9,.2,1.1); display: grid; justify-items: center; }
-.runner svg { width: 34px; height: 22px; transform: scaleX(-1); filter: drop-shadow(0 0 6px rgba(255,240,0,.6)); }
+.runner svg { width: 34px; height: 22px; transform: scaleX(-1); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--acc) 80%, transparent)); }
 .runner.hop svg { animation: hop .5s ease; }
 @keyframes hop { 40% { transform: scaleX(-1) translateY(-8px) rotate(-10deg); } }
-.runner .pct { position: absolute; top: 2px; inset-inline-start: 40px; font-family: var(--game); font-size: 13px; color: var(--canary); white-space: nowrap; }
+.runner .pct { position: absolute; top: 2px; inset-inline-start: 40px; font-family: var(--game); font-size: 13px; color: var(--acc); white-space: nowrap; transition: color .6s; }
 .runner.late .pct { inset-inline-start: auto; inset-inline-end: 40px; }
 .stage-line { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); margin-top: -6px; }
 .stage-line b { color: var(--paper); font-family: var(--display); font-weight: 700; }
+.stage-line .num { color: var(--acc); transition: color .6s; }
 
 /* ---------- thread ---------- */
 .thread { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; }
 .thread .col { display: flex; flex-direction: column; gap: 8px; padding-block: 20px 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+/* المتقدم يمين، ومستر بلاك شمال */
 .line { display: flex; gap: 8px; align-items: flex-end; max-width: 88%; animation: pop .32s cubic-bezier(.2,.9,.3,1.3) both; }
 @keyframes pop { from { transform: translateY(10px) scale(.96); opacity: 0; } }
-.line.me { align-self: flex-end; }
+.line.bot { align-self: flex-end; flex-direction: row-reverse; }
+.line.me { align-self: flex-start; }
 .ava { width: 30px; height: 30px; border-radius: 50%; background: var(--canary); flex: none; display: grid; place-items: center; }
 .ava img { height: 19px; filter: brightness(0); }
 .ava.ghost { visibility: hidden; }
 .msg { padding: 10px 14px; border-radius: 18px; white-space: pre-line; min-width: 0; overflow-wrap: anywhere; }
-.bot .msg { background: var(--bubble); border: 1px solid var(--edge); border-end-start-radius: 6px; }
-.me .msg { background: var(--canary); color: var(--ink); font-weight: 500; border-end-end-radius: 6px; }
+.bot .msg { background: color-mix(in srgb, var(--acc) 9%, var(--bubble)); border: 1px solid color-mix(in srgb, var(--acc) 30%, var(--edge)); border-end-end-radius: 6px; transition: background .6s, border-color .6s; }
+.me .msg { background: var(--canary); color: var(--ink); font-weight: 500; border-end-start-radius: 6px; }
 .line.bot + .line.me, .line.me + .line.bot { margin-top: 10px; }
 .typing { display: inline-flex; gap: 4px; padding: 14px 16px; }
-.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--canary); animation: blink 1s infinite; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); animation: blink 1s infinite; }
 .typing i:nth-child(2) { animation-delay: .15s; }
 .typing i:nth-child(3) { animation-delay: .3s; }
 @keyframes blink { 50% { opacity: .2; transform: translateY(-3px); } }
 
-.stage-badge { align-self: center; margin-block: 16px 6px; display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border-radius: 99px; background: #141400; border: 1px solid var(--canary-dim); font-size: 14px; animation: pop .4s both; }
-.stage-badge .num { background: var(--canary); color: var(--ink); width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; }
+.stage-badge { align-self: center; margin-block: 16px 6px; display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border-radius: 99px; background: color-mix(in srgb, var(--acc) 14%, #000); border: 1px solid color-mix(in srgb, var(--acc) 50%, transparent); font-size: 14px; animation: pop .4s both; }
+.stage-badge .num { background: var(--acc); color: var(--ink); width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; }
 
 .terms { align-self: stretch; background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; padding: 16px; display: grid; gap: 14px; animation: pop .4s both; }
 .terms h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 16px; color: var(--canary); }
 .jobs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
 .job { border: 1px solid var(--edge); border-radius: 14px; padding: 12px; display: grid; gap: 2px; background: var(--ink); }
+.job:nth-child(1) { border-color: color-mix(in srgb, var(--c41) 45%, transparent); }
+.job:nth-child(2) { border-color: color-mix(in srgb, var(--c42) 45%, transparent); }
+.job:nth-child(3) { border-color: color-mix(in srgb, var(--c43) 45%, transparent); }
+.job:nth-child(4) { border-color: color-mix(in srgb, var(--c44) 45%, transparent); }
 .job b { font-family: var(--display); font-weight: 700; font-size: 15px; }
 .job .pay { font-family: var(--game); font-size: 17px; color: var(--canary); direction: ltr; text-align: right; }
+.job .pay.txt { font-family: var(--display); font-weight: 700; font-size: 15px; direction: rtl; text-align: start; }
 .job small { color: var(--muted); font-size: 12px; }
 .terms ul { margin: 0; padding-inline-start: 18px; display: grid; gap: 4px; font-size: 14px; }
 .terms ul li::marker { color: var(--canary); }
@@ -180,55 +197,61 @@ button, input, textarea { font: inherit; color: inherit; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { border: 1.5px solid #333; background: var(--panel); padding: 10px 16px; border-radius: 99px; cursor: pointer; transition: border-color .15s, background .15s, transform .1s, color .15s; text-align: start; animation: pop .3s both; }
 .chip:nth-child(2) { animation-delay: .04s; } .chip:nth-child(3) { animation-delay: .08s; } .chip:nth-child(4) { animation-delay: .12s; } .chip:nth-child(n+5) { animation-delay: .16s; }
-.chip:hover { border-color: var(--canary); color: var(--canary); }
+.chip:hover { border-color: var(--acc); color: var(--acc); }
 .chip:active { transform: scale(.95); }
-.chip[aria-pressed="true"] { background: var(--canary); color: var(--ink); border-color: var(--canary); }
+.chip[aria-pressed="true"] { background: var(--acc); color: var(--ink); border-color: var(--acc); }
 .cards { display: grid; gap: 8px; }
 .cards .chip { border-radius: 14px; padding: 12px 14px; line-height: 1.55; width: 100%; display: flex; gap: 12px; align-items: flex-start; }
-.cards .chip .k { flex: none; width: 24px; height: 24px; border-radius: 7px; background: #222; display: grid; place-items: center; font-family: var(--game); font-size: 11px; color: var(--canary); margin-top: 1px; }
-.cards .chip:hover .k { background: var(--canary); color: var(--ink); }
+.cards .chip .k { flex: none; width: 24px; height: 24px; border-radius: 7px; background: #222; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--acc); margin-top: 1px; }
+.cards .chip:hover .k { background: var(--acc); color: var(--ink); }
 @media (min-width: 720px) { .cards { grid-template-columns: 1fr 1fr; } }
 .row { display: flex; gap: 8px; align-items: flex-end; }
 .field { flex: 1; min-width: 0; background: var(--panel); border: 1.5px solid #333; border-radius: 16px; padding: 12px 14px; outline: none; resize: none; }
-.field:focus { border-color: var(--canary); }
+.field:focus { border-color: var(--acc); }
 textarea.field { min-height: 100px; }
 .send { flex: none; border: 0; cursor: pointer; background: var(--canary); color: var(--ink); font-family: var(--display); font-weight: 700; padding: 12px 20px; border-radius: 16px; transition: transform .1s; }
 .send:active { transform: scale(.95); }
 .send:disabled { opacity: .3; cursor: default; }
-.meter { height: 4px; border-radius: 99px; background: #222; overflow: hidden; }
-.meter i { display: block; height: 100%; width: 0%; background: var(--pink); transition: width .2s, background .2s; }
-.meter.ok i { background: var(--canary); }
+.meter { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meter .bar { flex: 1; height: 5px; border-radius: 99px; background: #222; overflow: hidden; }
+.meter .bar i { display: block; height: 100%; width: 0%; background: var(--c42); transition: width .2s, background .2s; }
+.meter.ok .bar i { background: var(--c43); }
 
 /* ---------- floating +points ---------- */
 .float { position: fixed; z-index: 30; font-family: var(--game); font-size: 18px; color: var(--canary); pointer-events: none; animation: rise 1s ease-out forwards; text-shadow: 0 0 10px rgba(255,240,0,.7); }
 @keyframes rise { to { transform: translateY(-60px); opacity: 0; } }
 
 /* ---------- level-up ---------- */
-.levelup { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); animation: fade .2s both; cursor: pointer; padding: 24px; }
+.levelup { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); animation: fade .2s both; cursor: pointer; padding: 24px; }
 @keyframes fade { from { opacity: 0; } }
-.lv { text-align: center; display: grid; gap: 6px; justify-items: center; animation: zoom .55s cubic-bezier(.2,.9,.3,1.4) both; }
+.lv { --c: var(--canary); text-align: center; display: grid; gap: 6px; justify-items: center; animation: zoom .55s cubic-bezier(.2,.9,.3,1.4) both; }
 @keyframes zoom { from { transform: scale(.4) rotate(-8deg); opacity: 0; } }
-.lv .big { font-family: var(--game); font-size: clamp(88px, 22vw, 150px); line-height: 1; color: var(--canary); text-shadow: 6px 6px 0 var(--pink), 12px 12px 0 rgba(46,230,255,.6); }
+.lv .big { font-family: var(--game); font-size: clamp(88px, 22vw, 150px); line-height: 1; color: var(--c); text-shadow: 6px 6px 0 var(--canary), 12px 12px 0 rgba(255,255,255,.18); }
 .lv .t1 { font-family: var(--display); font-weight: 900; font-size: 26px; }
-.lv .t2 { font-family: var(--game); font-size: 22px; color: var(--cyan); }
+.lv .t2 { font-family: var(--game); font-size: 22px; color: var(--canary); }
 .lv .t3 { color: var(--muted); font-size: 13px; margin-top: 8px; }
 canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; width: 100%; height: 100%; }
 
 /* ---------- welcome ---------- */
-.welcome { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; place-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); overflow-y: auto; }
+.welcome { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; place-items: center; padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); overflow: hidden auto; }
 .welcome[hidden] { display: none !important; }
-.wbox { width: 100%; max-width: 520px; display: grid; justify-items: center; gap: 22px; text-align: center; }
+.blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .45; pointer-events: none; animation: drift 14s ease-in-out infinite alternate; }
+.blob.b1 { width: 42vmax; height: 42vmax; background: var(--c42); top: -18vmax; left: -14vmax; }
+.blob.b2 { width: 36vmax; height: 36vmax; background: var(--c41); bottom: -16vmax; right: -12vmax; animation-delay: -5s; }
+.blob.b3 { width: 26vmax; height: 26vmax; background: var(--c43); bottom: -10vmax; left: 10vmax; opacity: .28; animation-delay: -9s; }
+@keyframes drift { to { transform: translate(6vmax, 4vmax) scale(1.1); } }
+.wbox { position: relative; width: 100%; max-width: 520px; display: grid; justify-items: center; gap: 22px; text-align: center; }
 .wbox .m { width: 92px; animation: drop .7s cubic-bezier(.2,.9,.3,1.4) both; }
 .wbox .w { width: min(320px, 80vw); animation: drop .7s .1s cubic-bezier(.2,.9,.3,1.4) both; }
 .wbox .t { width: min(190px, 50vw); animation: drop .7s .2s both; }
 @keyframes drop { from { transform: translateY(-30px); opacity: 0; } }
 .wbox h1 { margin: 6px 0 0; font-family: var(--display); font-weight: 900; font-size: clamp(26px, 6vw, 34px); line-height: 1.3; text-wrap: balance; }
-.wbox p { margin: 0; color: var(--muted); max-width: 40ch; }
+.wbox p { margin: 0; color: #cfcfcf; max-width: 40ch; }
 .facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.facts span { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--edge); font-size: 13px; }
-.facts span:nth-child(1) { border-color: var(--canary-dim); color: var(--canary); }
-.facts span:nth-child(2) { border-color: rgba(255,61,139,.4); color: var(--pink); }
-.facts span:nth-child(3) { border-color: rgba(46,230,255,.4); color: var(--cyan); }
+.facts span { padding: 6px 12px; border-radius: 99px; border: 1px solid; font-size: 13px; background: rgba(0,0,0,.4); }
+.facts span:nth-child(1) { border-color: var(--canary); color: var(--canary); }
+.facts span:nth-child(2) { border-color: var(--c42); color: var(--c42); }
+.facts span:nth-child(3) { border-color: var(--c41); color: var(--c41); }
 .go { border: 0; cursor: pointer; background: var(--canary); color: var(--ink); font-family: var(--display); font-weight: 900; font-size: 20px; padding: 16px 44px; border-radius: 18px; box-shadow: 0 6px 0 #b3a800; transition: transform .1s, box-shadow .1s; animation: wiggle 2.4s 1.2s ease-in-out infinite; }
 .go:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3a800; }
 @keyframes wiggle { 0%, 88%, 100% { transform: rotate(0); } 92% { transform: rotate(-3deg); } 96% { transform: rotate(3deg); } }
@@ -243,15 +266,15 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 .label-body .name { font-family: var(--display); font-weight: 900; font-size: 21px; line-height: 1.3; }
 .label-body .job { color: var(--muted); font-size: 14px; }
 .label-body .size { text-align: center; }
-.label-body .size b { display: block; font-family: var(--game); font-size: 56px; line-height: 1; color: var(--canary); text-shadow: 3px 3px 0 var(--pink); }
+.label-body .size b { display: block; font-family: var(--game); font-size: 56px; line-height: 1; color: var(--canary); text-shadow: 3px 3px 0 var(--c42); }
 .label-body .size span { font-size: 12px; color: var(--muted); }
 .label-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px dashed #333; }
 .label-stats div { padding: 10px 12px; display: grid; gap: 2px; }
 .label-stats div + div { border-inline-start: 1px dashed #333; }
 .label-stats b { font-family: var(--game); font-size: 18px; }
-.label-stats div:nth-child(1) b { color: var(--canary); }
-.label-stats div:nth-child(2) b { color: var(--pink); }
-.label-stats div:nth-child(3) b { color: var(--cyan); }
+.label-stats div:nth-child(1) b { color: var(--c43); }
+.label-stats div:nth-child(2) b { color: var(--c42); }
+.label-stats div:nth-child(3) b { color: var(--c41); }
 .label-stats span { font-size: 12px; color: var(--muted); }
 .barcode { height: 40px; margin: 0 14px 14px; display: flex; gap: 2px; direction: ltr; }
 .barcode i { background: var(--paper); flex: none; height: 100%; }
@@ -263,9 +286,11 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 </head>
 <body>
 
+<div class="glow" aria-hidden="true"></div>
 <img class="bgmark" src="assets/mark.png" alt="">
 
 <div class="welcome" id="welcome">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
   <div class="wbox">
     <img class="m" src="assets/mark.png" alt="">
     <img class="w" src="assets/word.png" alt="Mr. Black">
@@ -277,7 +302,7 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
   </div>
 </div>
 
-<div class="shell">
+<div class="shell" id="shell">
   <aside class="side" aria-label="تقدمك">
     <div class="lock">
       <img class="m" src="assets/mark.png" alt="">
@@ -313,7 +338,7 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
       </div>
     </header>
     <main class="thread" id="threadWrap"><div class="col" id="thread" aria-live="polite"></div></main>
-    <footer class="dock"><div class="col" id="dock"></div></footer>
+    <footer class="dock" id="dockWrap"><div class="col" id="dock"></div></footer>
   </div>
 </div>
 
@@ -323,17 +348,9 @@ canvas.confetti { position: fixed; inset: 0; z-index: 45; pointer-events: none; 
 document.documentElement.lang = "ar"; document.documentElement.dir = "rtl";
 const MARK = "assets/mark.png";
 
-// ============ ربط جوجل فورم (نفس فورم مستر بلاك والشيت بتاعه) ============
-const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfM3maIZiXVFjVxG3-Y4fHPtNae5inv-eqbUoLIB6DC6l4bew/formResponse";
-const ENTRY = {
-  pay:778093076, name:835853576, phone:1260763558, age:1020341669, gender:477272954, marital:1428161153,
-  mil:949386780, area:1668049830, address:154267520, commute:640804711, transport:1166309749, ret:1329064612,
-  job:1054383438, mode:1094279761, exp:2005807878, expf:249888335, lastjob:237563631, sal:299005923,
-  working:405113247, start:369248202, student:1624281952, qual:1032788647, shift:1021362639, unavail:860491017,
-  lectures:761021353, fri:1761280340, pen:1928827994, sjt1:1114522540, sjt2:1619002038, sjt3:1945237304,
-  sjt4:2048533011, focus:891135801, sjt5:862102877, sjt6:337979660, sjt7:63951697, sjt8:2040133713,
-  pitch:150367731, idays:466565065, itime:857873979, consent:430727147
-};
+// ============ ربط جوجل فورم (فورم مستر بلاك – نسخة 2) ============
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScZpqoW0_CoUccfNRWXm4lftyf-yUqiiieNOIDdoc1um2N9Fg/formResponse";
+const ENTRY = {"pay": 954456377, "name": 1120453826, "phone": 1221171872, "age": 535706468, "gender": 947735563, "marital": 615090081, "mil": 1776373910, "area": 1429610039, "address": 289469664, "commute": 371202089, "transport": 1441837858, "job": 1309131795, "mode": 297476015, "exp": 620725270, "expf": 580694160, "lastjob": 571612940, "sal": 254799447, "working": 2090863393, "start": 376695481, "student": 1709071715, "qual": 1889460072, "shiftok": 1915866466, "dayoff": 2049331786, "lectures": 2023645209, "holidays": 1172001269, "pen": 1108872920, "sjt1": 734238060, "sjt2": 1939329888, "sjt3": 583874839, "sjt4": 978068072, "focus": 1273681787, "sjt5": 1918013442, "sjt6": 154179077, "sjt7": 1413241882, "sjt8": 290802511, "pitch": 1193987179, "idays": 275993573, "itime": 1759545298, "consent": 786053127};
 
 // ============ الاختيارات (لازم تطابق الفورم حرف بحرف) ============
 const JOB = {
@@ -351,8 +368,6 @@ const C = {
   mil: ["أديت الخدمة", "إعفاء نهائي", "مؤجل (طالب)", "مطلوب للتجنيد قريب"],
   area: ["طنطا (المدينة)", "قرية تابعة لمركز طنطا", "السنطة", "زفتى", "كفر الزيات", "بسيون", "قطور", "المحلة الكبرى", "سمنود", "محافظة تانية"],
   commute: ["أقل من 15 دقيقة", "من 15 لـ 30 دقيقة", "من 30 لـ 45 دقيقة", "من 45 دقيقة لساعة", "أكتر من ساعة"],
-  transport: ["مشي", "ميكروباص أو أتوبيس", "توكتوك أو تاكسي", "عربيتي أو موتوسيكل"],
-  ret: ["أيوه، عادي", "بصعوبة", "لأ، مقدرش"],
   mode: ["من البيت", "من الفرع"],
   exp: ["مفيش", "أقل من سنة", "من سنة لسنتين", "من سنتين لـ 4 سنين", "أكتر من 4 سنين"],
   expf: ["أحذية", "ملابس", "بيع في مجال تاني", "كول سنتر أو رد على رسايل أونلاين", "مفيش خبرة"],
@@ -361,9 +376,9 @@ const C = {
   start: ["فورًا", "خلال أسبوع", "خلال أسبوعين", "بعد شهر أو أكتر"],
   student: ["أيوه، طالب", "لأ، خلصت دراستي"],
   qual: ["إعدادية أو أقل", "دبلوم أو ثانوية عامة", "طالب جامعة أو معهد", "بكالوريوس أو ليسانس", "دراسات عليا"],
-  shift: ["الشيفت الصباحي (12 الضهر – 8 بالليل)", "الشيفت المسائي (4 العصر – 12 بالليل)", "الاتنين يناسبوني", "حسب جدول الكلية"],
-  unavail: ["السبت", "الحد", "الاتنين", "التلات", "الأربع", "الخميس", "الجمعة", "متاح كل الأيام"],
-  fri: ["أيوه، يناسبني", "لأ، مايناسبنيش"],
+  shiftok: ["أيوه، موافق", "لأ، أنا عايز شيفت ثابت"],
+  dayoff: ["الحد", "الاتنين", "التلات", "الأربع"],
+  holidays: ["أيوه، موافق على الشغل في الإجازات", "لأ، مش موافق على الشغل في الإجازات"],
   pen: ["أيوه، موافق", "لأ، مش موافق"],
   focus: ["جزمة", "صندل", "كوتشي", "شبشب"],
   idays: ["السبت", "الحد", "الاتنين", "التلات", "الأربع", "الخميس"],
@@ -414,11 +429,11 @@ const SJT = [
 ];
 
 const STAGES = [
-  { size: 41, name: "التعارف", sub: "اسمك والشروط" },
-  { size: 42, name: "بياناتك", sub: "سكنك ومواصلاتك" },
-  { size: 43, name: "الشغل والخبرة", sub: "الوظيفة اللي عايزها" },
-  { size: 44, name: "المواعيد", sub: "دراستك وشيفتك" },
-  { size: 45, name: "تحدي المواقف", sub: "8 مواقف من الفرع" }
+  { size: 41, name: "التعارف", sub: "اسمك والشروط", c: "var(--c41)" },
+  { size: 42, name: "بياناتك", sub: "سكنك ومواصلاتك", c: "var(--c42)" },
+  { size: 43, name: "الشغل والخبرة", sub: "الوظيفة اللي عايزها", c: "var(--c43)" },
+  { size: 44, name: "المواعيد", sub: "الشيفتات والإجازات", c: "var(--c44)" },
+  { size: 45, name: "تحدي المواقف", sub: "8 مواقف من الفرع", c: "var(--c45)" }
 ];
 const CHEERS = ["حلو", "تمام كده", "ماشي", "جميل", "عاش", "كده تمام", "اشطا"];
 
@@ -436,9 +451,9 @@ let points = 0, streak = 0, lastAnswerAt = 0;
 // ============ السيناريو ============
 const STEPS = [
   // ---- 41
-  { stage: 0, key: "name", type: "text", bot: ["أهلًا بيك في مستر بلاك.", "قبل ما نبدأ، اسمك إيه؟ اكتبه تلاتي زي البطاقة."],
+  { stage: 0, key: "name", type: "text", bot: ["أهلًا بيك في مستر بلاك.", "قبل ما نبدأ، اسمك إيه؟ اكتبه ثلاثي زي البطاقة."],
     placeholder: "مثال: أحمد محمد علي",
-    validate: v => /^\s*\S+(\s+\S+){2,}\s*$/.test(v) ? "" : "اكتب اسمك تلاتي على الأقل، زي: أحمد محمد علي" },
+    validate: v => /^\s*\S+(\s+\S+){2,}\s*$/.test(v) ? "" : "اكتب اسمك ثلاثي على الأقل، زي: أحمد محمد علي" },
   { stage: 0, key: "_terms", type: "info",
     bot: [() => `أهلًا يا ${first(A.name)}، نورتنا.`, "دي المرتبات والشروط بوضوح. اقراها كويس، هسألك عليها حالًا."] },
   { stage: 0, key: "pay", type: "choice", options: C.pay, bot: ["سؤال سريع: المرتبات بتتصرف امتى؟"] },
@@ -457,47 +472,52 @@ const STEPS = [
   { stage: 1, key: "mil", type: "choice", options: C.mil, bot: ["موقفك من التجنيد؟"],
     auto: () => (A.gender === "أنثى" ? "لا ينطبق (أنثى)" : null) },
   { stage: 1, key: "area", type: "choice", options: C.area, bot: ["ساكن فين؟"] },
-  { stage: 1, key: "address", type: "text", placeholder: "المنطقة والشارع وأقرب علامة", bot: ["اكتب العنوان بالتفصيل."],
-    validate: v => v.trim().length >= 12 ? "" : "العنوان قصير، اكتب المنطقة والشارع وأقرب علامة مميزة" },
+  { stage: 1, key: "address", type: "long", placeholder: "المحافظة، المدينة أو القرية، الشارع، وأقرب علامة مميزة",
+    bot: ["اكتب عنوانك بالتفصيل الممل: المحافظة، المدينة أو القرية، الشارع، وأقرب علامة مميزة."],
+    min: 60, validate: v => v.trim().length >= 60 ? "" : "العنوان لسه قصير، زوّد التفاصيل (60 حرف على الأقل)" },
   { stage: 1, key: "commute", type: "choice", options: C.commute,
-    bot: ["الفرع في شارع عمر بن عبد العزيز مع شارع سعيد، طنطا.", "بتاخد وقت قد إيه عشان توصله؟"] },
-  { stage: 1, key: "transport", type: "choice", options: C.transport, bot: ["وهتيجي بإيه؟"] },
-  { stage: 1, key: "ret", type: "choice", options: C.ret, bot: ["لو الشيفت خلص الساعة 12 بالليل، تقدر ترجع بيتك؟"] },
+    bot: ["فرعنا في شارع عمر بن عبد العزيز مع شارع سعيد، طنطا.", "بتاخد وقت قد إيه عشان توصله؟"] },
+  { stage: 1, key: "transport", type: "long", placeholder: "مثال: هركب ميكروباص من قريتي لموقف طنطا، وبعدين توكتوك لحد الفرع",
+    bot: ["اكتب مواصلاتك للفرع بالتفصيل: هتركب إيه ومنين، لحد ما توصل."],
+    min: 25, validate: v => v.trim().length >= 25 ? "" : "اكتب المواصلات بتفصيل أكتر (25 حرف على الأقل)" },
 
   // ---- 43
   { stage: 2, key: "job", type: "choice", bot: ["متقدم لأنهي وظيفة؟"],
     options: () => (A.gender === "أنثى" ? [JOB.mod] : [JOB.sales, JOB.mod, JOB.asst, JOB.mgr]),
     hint: () => (A.gender === "أنثى" ? "البنات مقبولين في وظيفة الموديريتور، وينفع تشتغلي من البيت" : ""),
     label: v => JOB_SHORT[v] || v },
-  { stage: 2, key: "mode", type: "choice", options: C.mode, bot: ["عايز تشتغل منين؟"],
+  { stage: 2, key: "mode", type: "choice", options: C.mode, bot: ["الموديريتور ينفع من البيت أو من الفرع. عايز تشتغل منين؟"],
     auto: () => (A.job !== JOB.mod ? "أنا مش متقدم لوظيفة الموديريتور" : null) },
   { stage: 2, key: "exp", type: "choice", options: C.exp, bot: ["خبرتك في البيع أو خدمة العملاء قد إيه؟"] },
   { stage: 2, key: "expf", type: "multi", options: C.expf, exclusive: "مفيش خبرة",
     bot: ["الخبرة دي كانت في إيه؟ اختار كل اللي ينطبق."],
     auto: () => (A.exp === "مفيش" ? ["مفيش خبرة"] : null) },
-  { stage: 2, key: "lastjob", type: "long", placeholder: "اسم المكان، قعدت قد إيه، وسبته ليه",
-    bot: ["آخر مكان اشتغلت فيه: اسمه إيه، قعدت فيه قد إيه، وسبته ليه؟"],
+  { stage: 2, key: "lastjob", type: "long", placeholder: "اسم المكان، اسم مديرك، قعدت قد إيه، وسبته ليه",
+    bot: ["آخر مكان اشتغلت فيه: اسمه إيه، واسم مديرك هناك، وقعدت فيه قد إيه، وسبته ليه؟"],
     auto: () => (A.exp === "مفيش" ? "لم أعمل من قبل" : null),
-    min: 10, validate: v => v.trim().length >= 10 ? "" : "اكتب تفاصيل أكتر شوية" },
-  { stage: 2, key: "sal", type: "choice", options: C.sal, bot: ["المرتب الأساسي اللي يناسبك، من غير العمولة؟"] },
+    min: 15, validate: v => v.trim().length >= 15 ? "" : "اكتب تفاصيل أكتر، ومتنساش اسم مديرك" },
+  { stage: 2, key: "sal", type: "choice", options: C.sal, bot: ["انت شفت المرتبات فوق. على حسب خبرتك، تتوقع تبدأ بمرتب أساسي كام؟"] },
   { stage: 2, key: "working", type: "choice", options: C.working, bot: ["بتشتغل حاليًا في مكان تاني؟"] },
   { stage: 2, key: "start", type: "choice", options: C.start, bot: ["تقدر تبدأ امتى؟"] },
 
   // ---- 44
   { stage: 3, key: "student", type: "choice", options: C.student, bot: ["انت طالب حاليًا؟"] },
   { stage: 3, key: "qual", type: "choice", options: C.qual, bot: ["مؤهلك الدراسي؟"] },
-  { stage: 3, key: "shift", type: "choice", options: C.shift,
-    bot: ["عندنا شيفتين حاليًا، وفي كل شيفت ساعة بريك.", "أنهي شيفت يناسبك؟"] },
-  { stage: 3, key: "unavail", type: "multi", options: C.unavail, exclusive: "متاح كل الأيام",
-    bot: ["في أيام مش هتقدر تشتغل فيها خالص؟"], hint: "لو متاح كل الأيام اختار: متاح كل الأيام" },
+  { stage: 3, key: "shiftok", type: "choice", options: C.shiftok,
+    bot: ["عندنا شيفتين: صباحي من 12 الضهر لـ 8 بالليل، ومسائي من 4 العصر لـ 12 بالليل، وفي كل شيفت ساعة بريك.",
+          "الشيفتات بتتبدل كل أسبوع حسب جدول الفرع، يعني مش هتثبت على صباحي بس أو مسائي بس. موافق؟"] },
+  { stage: 3, key: "dayoff", type: "choice", options: C.dayoff,
+    bot: ["ليك 4 أيام إجازة في الشهر، يعني يوم في الأسبوع. والإجازات ممنوعة الخميس والجمعة.",
+          "تحب يوم إجازتك يبقى يوم إيه؟ ده تفضيل بس، واليوم بيتحدد حسب جدول الفرع وقرار مدير المنطقة."] },
   { stage: 3, key: "lectures", type: "long", placeholder: "مثال: السبت والتلات من 9 لـ 1",
     bot: ["اكتب أيام ومواعيد المحاضرات اللي لازم تحضرها."],
     auto: () => (A.student !== "أيوه، طالب" ? "" : null),
     validate: v => v.trim().length >= 3 ? "" : "اكتب مواعيدك ولو باختصار" },
-  { stage: 3, key: "fri", type: "choice", options: C.fri,
-    bot: ["الشغل يوم الجمعة والإجازات الرسمية عادي، وبيتعوض بإجازة أو فلوس. يناسبك؟"] },
+  { stage: 3, key: "holidays", type: "choice", options: C.holidays,
+    bot: ["الشغل في الإجازات الرسمية والأعياد عادي، وبيتعوض بإجازة أو فلوس. موافق؟"],
+    label: v => (v.startsWith("أيوه") ? "أيوه، موافق" : "لأ، مش موافق") },
   { stage: 3, key: "pen", type: "choice", options: C.pen,
-    bot: ["بعد الأسبوع التجريبي في عقد رسمي فيه شرط جزائي لو حد ساب الشغل من غير إخطار. موافق؟"] },
+    bot: ["بعد الأسبوع التجريبي في عقد رسمي فيه شرط جزائي لو حد ساب الشغل من غير ما يبلغ قبلها بشهر. موافق؟"] },
 
   // ---- 45
   ...SJT.slice(0, 4).map((q, i) => sjtStep(i, q)),
@@ -522,6 +542,9 @@ let answered = 0, stageShown = -1;
 const $ = id => document.getElementById(id);
 const thread = $("thread"), wrap = $("threadWrap"), dock = $("dock");
 const scrollDown = () => requestAnimationFrame(() => { wrap.scrollTop = wrap.scrollHeight; });
+// لما الاختيارات تظهر تحت، الشات بيتزق لفوق عشان السؤال يفضل باين
+if ("ResizeObserver" in window) new ResizeObserver(scrollDown).observe($("dockWrap"));
+window.addEventListener("resize", scrollDown);
 function add(el) { thread.appendChild(el); scrollDown(); return el; }
 
 let lastWho = "";
@@ -554,7 +577,7 @@ function termsCard() {
     <h3>المرتب الشهري حسب الخبرة</h3>
     <div class="jobs">
       <div class="job"><b>مسؤول مبيعات</b><span class="pay">7,000 – 10,000</span><small>+ عمولة من 1% لحد 1.5% حسب التارجت</small></div>
-      <div class="job"><b>موديريتور</b><span class="pay">7,000 – 10,000</span><small>+ عمولة، وينفع من البيت</small></div>
+      <div class="job"><b>موديريتور</b><span class="pay txt">حسب الخبرة لحد 10,000</span><small>+ عمولة، وينفع من البيت</small></div>
       <div class="job"><b>مساعد مدير فرع</b><span class="pay">8,000 – 12,000</span><small>+ عمولة</small></div>
       <div class="job"><b>مدير فرع</b><span class="pay">8,000 – 15,000</span><small>+ عمولة على مبيعات الفرع كله</small></div>
     </div>
@@ -563,10 +586,10 @@ function termsCard() {
       <li>السن من 18 لـ 32 سنة.</li>
       <li>خبرة سنة على الأقل في البيع أو خدمة العملاء.</li>
       <li>البنات مقبولين في وظيفة الموديريتور بس.</li>
-      <li>أقصى وقت وصول للفرع 45 دقيقة.</li>
-      <li>شيفت صباحي 12 الضهر لـ 8 بالليل، أو مسائي 4 العصر لـ 12 بالليل.</li>
-      <li>الشغل الجمعة والإجازات عادي، وبيتعوض.</li>
-      <li>أسبوع تجريبي مدفوع، وبعده عقد فيه شرط جزائي.</li>
+      <li>شيفت صباحي 12 الضهر لـ 8 بالليل، أو مسائي 4 العصر لـ 12 بالليل، والشيفتات بتتبدل كل أسبوع.</li>
+      <li>4 أيام إجازة في الشهر، والإجازات ممنوعة الخميس والجمعة.</li>
+      <li>الشغل في الإجازات الرسمية والأعياد عادي، وبيتعوض بإجازة أو فلوس.</li>
+      <li>أسبوع تجريبي مدفوع، وبعده عقد فيه شرط جزائي لو حد ساب الشغل من غير ما يبلغ قبلها بشهر.</li>
       <li>المرتبات بتتصرف من يوم 5 لـ يوم 8 في الشهر.</li>
     </ul>`;
   add(d); lastWho = "";
@@ -574,11 +597,13 @@ function termsCard() {
 
 // ---- journey (laptop)
 const journey = $("journey");
-STAGES.forEach(s => { const li = document.createElement("li"); li.innerHTML = `<span class="dot">${s.size}</span><span class="jt"><b>${s.name}</b><small>${s.sub}</small></span>`; journey.appendChild(li); });
+STAGES.forEach(s => { const li = document.createElement("li"); li.style.setProperty("--c", s.c); li.innerHTML = `<span class="dot">${s.size}</span><span class="jt"><b>${s.name}</b><small>${s.sub}</small></span>`; journey.appendChild(li); });
 
 function setProgress(stage) {
   const pct = Math.round((answered / QUESTIONS) * 100);
+  document.documentElement.style.setProperty("--acc", STAGES[stage].c);
   $("fill").style.width = pct + "%";
+  $("fill").style.backgroundPosition = (100 - stage * 25) + "% 0";
   const r = $("runner"); r.style.insetInlineStart = `calc(10px + (100% - 54px) * ${pct / 100})`;
   r.classList.toggle("late", pct > 75);
   r.classList.remove("hop"); void r.offsetWidth; r.classList.add("hop");
@@ -589,15 +614,15 @@ function setProgress(stage) {
   [...journey.children].forEach((li, i) => { li.className = i < stage ? "done" : i === stage ? "now" : ""; });
 }
 function bump(el) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
-function floatPoints(n, from) {
-  const r = (from || $("ptsPill")).getBoundingClientRect();
+function floatPoints(n) {
+  const r = $("ptsPill").getBoundingClientRect();
   const f = document.createElement("div"); f.className = "float"; f.textContent = "+" + n;
   f.style.left = (r.left + r.width / 2 - 14) + "px"; f.style.top = (r.top - 6) + "px";
   document.body.appendChild(f); setTimeout(() => f.remove(), 1000);
 }
-function addPoints(n, from) {
+function addPoints(n) {
   points += n; $("pts").textContent = points; $("sidePts").textContent = points;
-  bump($("ptsPill")); floatPoints(n, from);
+  bump($("ptsPill")); floatPoints(n);
 }
 function updateStreak() {
   const now = Date.now();
@@ -614,8 +639,8 @@ function confetti(ms = 1400) {
   const c = document.createElement("canvas"); c.className = "confetti"; document.body.appendChild(c);
   const ctx = c.getContext("2d"); const dpr = Math.min(2, window.devicePixelRatio || 1);
   c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
-  const cols = ["#fff000", "#ffffff", "#ff3d8b", "#2ee6ff"];
-  const ps = Array.from({ length: 140 }, () => ({ x: innerWidth / 2, y: innerHeight * .45, vx: (Math.random() - .5) * 14, vy: -Math.random() * 13 - 4, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: pick(cols) }));
+  const cols = ["#fff000", "#ffffff", "#ff3d8b", "#2ee6ff", "#9dff3a", "#ff8a1f"];
+  const ps = Array.from({ length: 150 }, () => ({ x: innerWidth / 2, y: innerHeight * .45, vx: (Math.random() - .5) * 14, vy: -Math.random() * 13 - 4, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: pick(cols) }));
   const t0 = performance.now();
   (function frame(t) {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
@@ -623,10 +648,11 @@ function confetti(ms = 1400) {
     if (t - t0 < ms) requestAnimationFrame(frame); else c.remove();
   })(t0);
 }
-function levelUp(size, name) {
+function levelUp(i) {
   return new Promise(res => {
+    const s = STAGES[i];
     const o = document.createElement("div"); o.className = "levelup"; o.setAttribute("role", "status");
-    o.innerHTML = `<div class="lv"><div class="big">${size}</div><div class="t1">قفلت مقاس ${size}</div><div class="t2">+50</div><div class="t3">${name} خلص. دوس في أي حتة وكمّل</div></div>`;
+    o.innerHTML = `<div class="lv" style="--c:${s.c}"><div class="big">${s.size}</div><div class="t1">قفلت مقاس ${s.size}</div><div class="t2">+50</div><div class="t3">${s.name} خلص. دوس في أي حتة وكمّل</div></div>`;
     document.body.appendChild(o); confetti();
     const done = () => { o.remove(); res(); };
     o.addEventListener("click", done);
@@ -652,10 +678,11 @@ function ask(step) {
         const shown = step.label ? step.label(o) : o;
         if (step.type === "cards") { b.innerHTML = `<span class="k">${"أبجد"[i]}</span><span></span>`; b.lastChild.textContent = shown; }
         else b.textContent = shown;
-        b.addEventListener("click", () => resolve({ value: o, shown, el: b }));
+        b.addEventListener("click", () => resolve({ value: o, shown }));
         box.appendChild(b);
       });
       dock.appendChild(box);
+      scrollDown();
       return;
     }
 
@@ -673,8 +700,9 @@ function ask(step) {
         });
         box.appendChild(b); return b;
       });
-      send.addEventListener("click", () => { const list = opts.filter(o => picked.has(o)); resolve({ value: list, shown: list.join("، "), el: send }); });
+      send.addEventListener("click", () => { const list = opts.filter(o => picked.has(o)); resolve({ value: list, shown: list.join("، ") }); });
       dock.appendChild(box); dock.appendChild(send);
+      scrollDown();
       return;
     }
 
@@ -688,8 +716,9 @@ function ask(step) {
     const send = document.createElement("button"); send.type = "submit"; send.className = "send"; send.textContent = "ابعت";
     row.append(input, send); dock.appendChild(row);
     if (step.min) {
-      const m = document.createElement("div"); m.className = "meter"; m.innerHTML = "<i></i>";
-      const upd = () => { const n = input.value.trim().length; m.firstChild.style.width = Math.min(100, n / step.min * 100) + "%"; m.classList.toggle("ok", n >= step.min); };
+      const m = document.createElement("div"); m.className = "meter";
+      m.innerHTML = `<span class="bar"><i></i></span><span class="cnt">0 / ${step.min}</span>`;
+      const upd = () => { const n = input.value.trim().length; m.querySelector("i").style.width = Math.min(100, n / step.min * 100) + "%"; m.querySelector(".cnt").textContent = `${n} / ${step.min}`; m.classList.toggle("ok", n >= step.min); };
       input.addEventListener("input", upd); dock.appendChild(m);
     }
     dock.appendChild(err);
@@ -698,8 +727,10 @@ function ask(step) {
       let v = input.value; if (step.clean) v = step.clean(v);
       const msg = step.validate ? step.validate(v) : (v.trim() ? "" : "اكتب إجابتك");
       if (msg) { err.textContent = msg; input.focus(); return; }
-      resolve({ value: step.map ? step.map(v) : v.trim(), shown: v.trim(), el: send });
+      resolve({ value: step.map ? step.map(v) : v.trim(), shown: v.trim() });
     });
+    input.addEventListener("focus", () => setTimeout(scrollDown, 300));
+    scrollDown();
     if (window.matchMedia("(min-width: 960px)").matches) setTimeout(() => input.focus({ preventScroll: true }), 50);
   });
 }
@@ -751,15 +782,14 @@ async function finish() {
 async function run() {
   for (const step of STEPS) {
     if (step.stage !== stageShown) {
-      if (stageShown >= 0) { addPoints(50); setProgress(step.stage); await levelUp(STAGES[stageShown].size, STAGES[stageShown].name); }
+      if (stageShown >= 0) { addPoints(50); const prev = stageShown; setProgress(step.stage); await levelUp(prev); }
       stageShown = step.stage; stageBadge(step.stage); setProgress(step.stage); await sleep(200);
     }
     const auto = step.auto ? step.auto() : null;
     if (auto !== null && auto !== undefined) { A[step.key] = auto; answered++; setProgress(step.stage); continue; }
     for (const ln of step.bot) await say(typeof ln === "function" ? ln() : ln);
     if (step.type === "info") { termsCard(); await sleep(500); continue; }
-    const { value, shown, el } = await ask(step);
-    const r = el ? el.getBoundingClientRect() : null;
+    const { value, shown } = await ask(step);
     dock.innerHTML = "";
     A[step.key] = value;
     bubble(shown, "me");
@@ -773,7 +803,7 @@ async function run() {
   addPoints(50);
   [...$("stops").children].forEach(s => s.classList.add("on"));
   [...journey.children].forEach(li => li.className = "done");
-  await levelUp(45, STAGES[4].name);
+  await levelUp(4);
   await finish();
 }
 
